@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { ListRow } from '@/components/patterns/list-row'
 import type { Post } from './mockPosts'
 import { formatRelativeDate } from '@/lib/formatRelativeDate'
 import { PostActionsMenu } from './PostActionsMenu'
@@ -10,21 +10,15 @@ interface PostRowProps {
 }
 
 export function PostRow({ post }: PostRowProps) {
-  const [hovered, setHovered] = useState(false)
   const navigate = useNavigate()
 
   const isUntitled = post.title.trim() === ''
   const titleText = isUntitled ? 'Untitled' : post.title
 
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <ListRow
       onClick={() => navigate(`/content/posts/${post.id}/edit`)}
-      className={cn(
-        'relative flex items-baseline px-2 py-8 border-b border-border cursor-pointer transition-colors',
-        'hover:bg-row-hover',
-      )}
+      className="flex items-baseline py-8"
     >
       <div className="w-[180px] shrink-0 flex items-center">
         <span className="t-mono text-muted">{formatRelativeDate(post.publishedAt)}</span>
@@ -42,8 +36,8 @@ export function PostRow({ post }: PostRowProps) {
       </div>
 
       <div className="absolute right-8 top-[43px]">
-        <PostActionsMenu postId={post.id} visible={hovered} />
+        <PostActionsMenu postId={post.id} />
       </div>
-    </div>
+    </ListRow>
   )
 }

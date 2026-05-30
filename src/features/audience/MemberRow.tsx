@@ -1,3 +1,4 @@
+import { ListRow } from '@/components/patterns/list-row'
 import { MemberAvatar } from './MemberAvatar'
 import type { Member } from './mockMembers'
 
@@ -9,7 +10,7 @@ function formatCreated(d: Date) {
 
 export function MemberRow({ member }: { member: Member }) {
   return (
-    <div className="flex gap-2 items-center px-5 py-4 border-b border-border hover:bg-row-hover cursor-pointer">
+    <ListRow className="flex gap-2 items-center py-4">
       <div className="flex-1 min-w-0 flex gap-[14px] items-center">
         <MemberAvatar avatar={member.avatar} name={member.name} />
         <p className="text-[14px] font-medium text-foreground truncate">{member.name}</p>
@@ -17,6 +18,6 @@ export function MemberRow({ member }: { member: Member }) {
       <p className="flex-1 min-w-0 text-[12px] text-foreground">{member.openRate}%</p>
       <p className="flex-1 min-w-0 text-[12px] text-foreground">{member.location}</p>
       <p className="flex-1 min-w-0 text-[12px] text-foreground">{formatCreated(member.createdAt)}</p>
-    </div>
+    </ListRow>
   )
 }

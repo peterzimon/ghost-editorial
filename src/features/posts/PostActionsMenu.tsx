@@ -9,11 +9,9 @@ import {
 
 interface PostActionsMenuProps {
   postId: string
-  /** Controls hover-reveal: hidden until row is hovered. */
-  visible: boolean
 }
 
-export function PostActionsMenu({ postId, visible }: PostActionsMenuProps) {
+export function PostActionsMenu({ postId }: PostActionsMenuProps) {
   const navigate = useNavigate()
 
   return (
@@ -21,8 +19,7 @@ export function PostActionsMenu({ postId, visible }: PostActionsMenuProps) {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          data-visible={visible}
-          className="h-8 w-10 flex items-center justify-center bg-white border border-border text-foreground opacity-0 data-[visible=true]:opacity-100 data-[state=open]:opacity-100 transition-opacity"
+          className="h-8 w-10 flex items-center justify-center bg-white border border-border text-foreground opacity-0 group-hover:opacity-100 data-[state=open]:opacity-100 transition-opacity cursor-pointer"
           onClick={(e) => e.stopPropagation()}
           aria-label="Post actions"
         >
