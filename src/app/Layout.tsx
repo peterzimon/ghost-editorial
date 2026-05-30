@@ -62,7 +62,7 @@ export function Layout() {
 
   return (
     <div className="min-h-full bg-background flex flex-col">
-      <div>
+      <div className="sticky top-0 z-50 bg-background">
         <TopNav />
         {sub && <SubNav leftItems={sub.left} rightItems={sub.right} />}
       </div>

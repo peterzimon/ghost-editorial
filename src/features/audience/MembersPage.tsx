@@ -2,11 +2,24 @@ import { ListFilter, Plus, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 
-export function MembersPage() {
+export type MembersFilter = 'all' | 'vip' | 'friends' | 'early-birds'
+
+const TITLES: Record<MembersFilter, string> = {
+  all: 'Members',
+  vip: 'VIP',
+  friends: 'Friends & Family',
+  'early-birds': 'Early birds',
+}
+
+interface MembersPageProps {
+  filter: MembersFilter
+}
+
+export function MembersPage({ filter }: MembersPageProps) {
   return (
     <Page>
       <Page.Header>
-        <Page.Title>Members</Page.Title>
+        <Page.Title>{TITLES[filter]}</Page.Title>
         <Page.Actions>
           <Button variant="ghost" size="icon" aria-label="Search">
             <Search className="size-4" />

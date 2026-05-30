@@ -5,8 +5,17 @@ import { Page } from '@/components/templates/page'
 import { mockPosts, type PostStatus } from './mockPosts'
 import { PostRow } from './PostRow'
 
+type PostsFilter = 'all' | PostStatus
+
+const TITLES: Record<PostsFilter, string> = {
+  all: 'Posts',
+  draft: 'Drafts',
+  scheduled: 'Scheduled',
+  published: 'Published',
+}
+
 interface PostsPageProps {
-  filter: 'all' | PostStatus
+  filter: PostsFilter
 }
 
 export function PostsPage({ filter }: PostsPageProps) {
@@ -18,7 +27,7 @@ export function PostsPage({ filter }: PostsPageProps) {
   return (
     <Page>
       <Page.Header>
-        <Page.Title>Posts</Page.Title>
+        <Page.Title>{TITLES[filter]}</Page.Title>
         <Page.Actions>
           <Button variant="ghost">
             <ListFilter className="size-4" />

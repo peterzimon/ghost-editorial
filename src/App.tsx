@@ -38,8 +38,10 @@ export default function App() {
           <Route path="/content/media" element={<MediaPage />} />
 
           <Route path="/audience" element={<Navigate to="/audience/members" replace />} />
-          <Route path="/audience/members" element={<MembersPage />} />
-          <Route path="/audience/members/*" element={<MembersPage />} />
+          <Route path="/audience/members" element={<MembersPage filter="all" />} />
+          <Route path="/audience/members/vip" element={<MembersPage filter="vip" />} />
+          <Route path="/audience/members/friends" element={<MembersPage filter="friends" />} />
+          <Route path="/audience/members/early-birds" element={<MembersPage filter="early-birds" />} />
           <Route path="/audience/comments" element={<CommentsPage />} />
 
           <Route path="/growth" element={<Navigate to="/growth/automations" replace />} />
