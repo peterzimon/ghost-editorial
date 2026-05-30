@@ -42,13 +42,8 @@ const GROWTH_LEFT: SubNavItem[] = [
   { label: 'Growth Tools', to: '/growth/tools' },
 ]
 
-const NETWORK_LEFT: SubNavItem[] = [
-  { label: 'ActivityPub', to: '/network' },
-]
-
 function getSubNav(pathname: string): { left: SubNavItem[]; right?: SubNavItem[] } | null {
   if (pathname.startsWith('/dashboard')) return { left: DASHBOARD_LEFT }
-  if (pathname.startsWith('/network')) return { left: NETWORK_LEFT }
   if (pathname.startsWith('/content/posts')) return { left: CONTENT_LEFT, right: POSTS_RIGHT }
   if (pathname.startsWith('/content')) return { left: CONTENT_LEFT }
   if (pathname.startsWith('/audience/members')) return { left: AUDIENCE_LEFT, right: AUDIENCE_RIGHT }
@@ -60,7 +55,7 @@ function getSubNav(pathname: string): { left: SubNavItem[]; right?: SubNavItem[]
 export function Layout() {
   const { pathname } = useLocation()
   const sub = getSubNav(pathname)
-  const fullBleed = pathname === '/site'
+  const fullBleed = pathname === '/site' || pathname === '/network'
 
   return (
     <div className="h-full bg-background flex flex-col">

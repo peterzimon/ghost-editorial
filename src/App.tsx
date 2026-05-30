@@ -21,11 +21,13 @@ export default function App() {
         <Route element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
 
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/dashboard/*" element={<DashboardPage />} />
+          <Route path="/dashboard" element={<DashboardPage view="overview" />} />
+          <Route path="/dashboard/web-analytics" element={<DashboardPage view="web-analytics" />} />
+          <Route path="/dashboard/newsletters" element={<DashboardPage view="newsletters" />} />
+          <Route path="/dashboard/growth" element={<DashboardPage view="growth" />} />
+          <Route path="/dashboard/sources" element={<DashboardPage view="sources" />} />
 
           <Route path="/network" element={<NetworkPage />} />
-          <Route path="/network/*" element={<NetworkPage />} />
 
           <Route path="/content" element={<Navigate to="/content/posts" replace />} />
           <Route path="/content/posts" element={<PostsPage filter="all" />} />

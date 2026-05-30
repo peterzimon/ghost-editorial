@@ -2,11 +2,25 @@ import { Calendar, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 
-export function DashboardPage() {
+export type DashboardView = 'overview' | 'web-analytics' | 'newsletters' | 'growth' | 'sources'
+
+const TITLES: Record<DashboardView, string> = {
+  overview: 'Overview',
+  'web-analytics': 'Web Analytics',
+  newsletters: 'Newsletters',
+  growth: 'Growth',
+  sources: 'Sources',
+}
+
+interface DashboardPageProps {
+  view: DashboardView
+}
+
+export function DashboardPage({ view }: DashboardPageProps) {
   return (
     <Page>
       <Page.Header>
-        <Page.Title>Dashboard</Page.Title>
+        <Page.Title>{TITLES[view]}</Page.Title>
         <Page.Actions>
           <Button variant="ghost">
             <Calendar className="size-4" />

@@ -52,7 +52,15 @@ export function TopNav() {
           <div className="size-2 bg-accent" />
           <span className="t-info text-accent">27 Online</span>
         </div>
-        <NavLink to="/site" className="t-info text-muted hover:text-foreground transition-colors cursor-pointer">
+        <NavLink
+          to="/site"
+          className={({ isActive }) =>
+            cn(
+              't-info transition-colors cursor-pointer hover:text-foreground',
+              isActive ? 'text-foreground' : 'text-muted',
+            )
+          }
+        >
           View site
         </NavLink>
         <button type="button" aria-label="Search" className="text-muted hover:text-foreground transition-colors cursor-pointer">

@@ -1,12 +1,7 @@
-import { Page } from '@/components/templates/page'
-
 export function NetworkPage() {
   return (
-    <Page>
-      <Page.Header>
-        <Page.Title>Network</Page.Title>
-      </Page.Header>
-      <Page.Content />
-    </Page>
+    <div className="h-full flex items-center justify-center">
+      <span className="t-mono text-muted">ActivityPub</span>
+    </div>
   )
 }
