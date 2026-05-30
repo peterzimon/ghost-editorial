@@ -2,7 +2,7 @@ import type { ReaderArticle } from './reader-data'
 
 export function ReaderArticleRow({ article }: { article: ReaderArticle }) {
   return (
-    <article className="relative flex gap-8 items-start py-6 px-8 -mx-8 hover:bg-row-hover transition-colors cursor-pointer after:content-[''] after:absolute after:left-8 after:right-8 after:bottom-0 after:h-px after:bg-border after:transition-opacity hover:after:opacity-0 has-[+article:hover]:after:opacity-0">
+    <article className="relative flex gap-8 items-start py-6 pl-8 -ml-8 pr-10 -mr-10 hover:bg-row-hover transition-colors cursor-pointer after:content-[''] after:absolute after:left-8 after:right-10 after:bottom-0 after:h-px after:bg-border after:transition-opacity hover:after:opacity-0 has-[+article:hover]:after:opacity-0">
       <div className="flex-1 min-w-0 flex flex-col gap-2">
         <div className="flex items-center gap-2 text-[13px]">
           <span

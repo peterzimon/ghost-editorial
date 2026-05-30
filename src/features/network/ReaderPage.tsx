@@ -3,6 +3,7 @@ import { Page } from '@/components/templates/page'
 import { READER_ARTICLES, type ReaderCategory } from './reader-data'
 import { ReaderCategoryPills } from './ReaderCategoryPills'
 import { ReaderArticleRow } from './ReaderArticleRow'
+import { FollowSuggestions } from './FollowSuggestions'
 
 export function ReaderPage() {
   const [category, setCategory] = useState<ReaderCategory>('Following')
@@ -14,10 +15,13 @@ export function ReaderPage() {
       </Page.Header>
       <Page.Content className="gap-6 pt-6">
         <ReaderCategoryPills active={category} onChange={setCategory} />
-        <div className="flex flex-col">
-          {READER_ARTICLES.map((article) => (
-            <ReaderArticleRow key={article.id} article={article} />
-          ))}
+        <div className="grid grid-cols-3">
+          <div className="col-span-2 flex flex-col border-r border-border pr-10">
+            {READER_ARTICLES.map((article) => (
+              <ReaderArticleRow key={article.id} article={article} />
+            ))}
+          </div>
+          <FollowSuggestions />
         </div>
       </Page.Content>
     </Page>
