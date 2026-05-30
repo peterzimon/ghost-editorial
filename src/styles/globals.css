@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/inter/opsz-italic.css';
+@import '@fontsource-variable/geist-mono/index.css';
+@import '@fontsource-variable/lora/index.css';
+@import '@fontsource-variable/lora/wght-italic.css';
+
+@theme {
+  --color-foreground: #191919;
+  --color-muted: #959593;
+  --color-border: #ededec;
+  --color-accent: #ef0e22;
+  --color-background: #ffffff;
+  --color-row-hover: rgba(243, 243, 242, 0.4);
+  --color-avatar-bg: #e0e4ff;
+  --color-avatar-fg: #4f4ca8;
+
+  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Lora Variable', 'Lora', Georgia, serif;
+  --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  font-variation-settings: 'opsz' 14;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@utility t-nav {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+@utility t-nav-active {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-foreground);
+}
+
+@utility t-info {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+@utility t-mono {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-variation-settings: 'wght' 500;
+}
+
+@utility t-h1 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: 52px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variation-settings: 'wght' 400;
+}
+
+@utility t-post-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 1.35;
+  letter-spacing: -0.013em;
+  font-variation-settings: 'opsz' 28, 'wght' 500;
+}
+
+@utility t-byline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+@utility t-button {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
