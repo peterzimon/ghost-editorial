@@ -18,7 +18,7 @@ export function ReaderCategoryPills({ active, onChange }: ReaderCategoryPillsPro
               type="button"
               onClick={() => onChange(category)}
               className={cn(
-                'h-9 px-5 rounded-full text-[13px] font-medium whitespace-nowrap shrink-0 transition-colors cursor-pointer',
+                'h-9 px-5 rounded-full t-button whitespace-nowrap shrink-0 transition-colors cursor-pointer',
                 isActive
                   ? 'bg-foreground text-white'
                   : 'bg-elevated text-foreground hover:bg-control-hover',
