@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { StableLabel } from './stable-label'
 
 export type SubNavItem = {
   label: string
@@ -41,7 +42,7 @@ function SubNavLink({ item }: { item: SubNavItem }) {
         cn('whitespace-nowrap h-full flex items-center transition-colors hover:t-nav-active', isActive ? 't-nav-active' : 't-nav')
       }
     >
-      {item.label}
+      <StableLabel>{item.label}</StableLabel>
     </NavLink>
   )
 }

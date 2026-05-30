@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { ChevronDown, LogOut, Search, Settings, User } from 'lucide-react'
 import { Logomark } from './logomark'
+import { StableLabel } from './stable-label'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,8 +22,11 @@ export function TopNav() {
   return (
     <div className="h-[52px] flex items-center justify-between px-10 border-b border-border w-full">
       <div className="flex items-center w-[260px]">
-        <NavLink to="/" className="text-foreground">
+        <NavLink to="/" className="group flex items-center gap-3 text-foreground">
           <Logomark />
+          <span className="font-serif-headline text-[16px] leading-none tracking-[-0.01em] opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0">
+            The Blueprint
+          </span>
         </NavLink>
       </div>
 
@@ -38,7 +42,7 @@ export function TopNav() {
               )
             }
           >
-            {section.label}
+            <StableLabel>{section.label}</StableLabel>
           </NavLink>
         ))}
       </nav>
