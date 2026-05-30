@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { ListRow } from '@/components/patterns/list-row'
 import { formatRelativeDate } from '@/lib/formatRelativeDate'
 import { cn } from '@/lib/cn'
@@ -6,9 +7,13 @@ import type { Automation } from './mockAutomations'
 export function AutomationRow({ automation }: { automation: Automation }) {
   const Icon = automation.icon
   const isActive = automation.status === 'active'
+  const navigate = useNavigate()
 
   return (
-    <ListRow className="flex gap-2 items-center py-4">
+    <ListRow
+      onClick={() => navigate(`/growth/automations/${automation.id}`)}
+      className="flex gap-2 items-center py-4"
+    >
       <div className="flex-1 min-w-0 flex gap-[14px] items-center">
         <div
           className="size-8 shrink-0 flex items-center justify-center text-foreground"

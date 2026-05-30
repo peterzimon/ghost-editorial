@@ -12,6 +12,7 @@ import { ReaderPage } from './features/network/ReaderPage'
 import { MembersPage } from './features/audience/MembersPage'
 import { CommentsPage } from './features/audience/CommentsPage'
 import { AutomationsPage } from './features/growth/AutomationsPage'
+import { AutomationDetailPage } from './features/growth/AutomationDetailPage'
 import { GrowthToolsPage } from './features/growth/GrowthToolsPage'
 import { SitePreviewPage } from './features/site/SitePreviewPage'
 
@@ -19,6 +20,9 @@ export default function App() {
   return (
     <HashRouter>
       <Routes>
+        {/* Standalone full-screen routes (no Layout chrome). */}
+        <Route path="/growth/automations/:id" element={<AutomationDetailPage />} />
+
         <Route element={<Layout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
 
