@@ -58,11 +58,11 @@ export function Layout() {
   const fullBleed = pathname === '/site' || pathname === '/network'
 
   return (
-    <div className="h-full bg-background flex flex-col">
-      <div className="sticky top-0 z-50 bg-background">
+    <div className="h-full bg-background flex flex-col pt-[52px]">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-background">
         <TopNav />
-        {sub && <SubNav leftItems={sub.left} rightItems={sub.right} />}
       </div>
+      {sub && <SubNav leftItems={sub.left} rightItems={sub.right} />}
       <main
         className={cn(
           'flex-1 min-h-0 w-full',
