@@ -12,6 +12,7 @@ import { MembersPage } from './features/audience/MembersPage'
 import { CommentsPage } from './features/audience/CommentsPage'
 import { AutomationsPage } from './features/growth/AutomationsPage'
 import { GrowthToolsPage } from './features/growth/GrowthToolsPage'
+import { SitePreviewPage } from './features/site/SitePreviewPage'
 
 export default function App() {
   return (
@@ -47,6 +48,8 @@ export default function App() {
           <Route path="/growth" element={<Navigate to="/growth/automations" replace />} />
           <Route path="/growth/automations" element={<AutomationsPage />} />
           <Route path="/growth/tools" element={<GrowthToolsPage />} />
+
+          <Route path="/site" element={<SitePreviewPage />} />
 
           <Route path="/posts" element={<Navigate to="/content/posts" replace />} />
 

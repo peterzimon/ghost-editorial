@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { TopNav } from '@/components/patterns/top-nav'
 import { SubNav, type SubNavItem } from '@/components/patterns/sub-nav'
+import { cn } from '@/lib/cn'
 
 const CONTENT_LEFT: SubNavItem[] = [
   { label: 'Posts', to: '/content/posts' },
@@ -59,14 +60,20 @@ function getSubNav(pathname: string): { left: SubNavItem[]; right?: SubNavItem[]
 export function Layout() {
   const { pathname } = useLocation()
   const sub = getSubNav(pathname)
+  const fullBleed = pathname === '/site'
 
   return (
-    <div className="min-h-full bg-background flex flex-col">
+    <div className="h-full bg-background flex flex-col">
       <div className="sticky top-0 z-50 bg-background">
         <TopNav />
         {sub && <SubNav leftItems={sub.left} rightItems={sub.right} />}
       </div>
-      <main className="flex-1 w-full lg:max-w-[1280px] mx-auto px-10 pt-[60px]">
+      <main
+        className={cn(
+          'flex-1 min-h-0 w-full',
+          fullBleed ? '' : 'lg:max-w-[1280px] mx-auto px-10 pt-[60px]',
+        )}
+      >
         <Outlet />
       </main>
     </div>
