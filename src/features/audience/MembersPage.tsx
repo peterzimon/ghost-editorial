@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ListFilter, Plus, Search, X } from 'lucide-react'
+import { ListFilter, MoreHorizontal, Plus, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
@@ -87,6 +87,9 @@ export function MembersPage({ filter }: MembersPageProps) {
             <Page.Actions>
               <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
                 <Search className="size-4" />
+              </Button>
+              <Button variant="ghost" size="icon" aria-label="More actions">
+                <MoreHorizontal className="size-4" />
               </Button>
               <Button
                 variant={filterOpen ? 'pressed' : 'ghost'}
