@@ -14,6 +14,8 @@ const buttonVariants = cva(
           'bg-background text-foreground t-button border border-border hover:bg-control-hover',
         ghost:
           'bg-transparent text-foreground t-button hover:bg-control-hover',
+        pressed:
+          'bg-elevated text-foreground t-button shadow-[inset_0_1px_2px_rgba(0,0,0,0.07)]',
         icon:
           'bg-background text-foreground border border-border hover:bg-control-hover',
       },

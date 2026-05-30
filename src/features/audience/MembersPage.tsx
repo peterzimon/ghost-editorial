@@ -59,7 +59,7 @@ export function MembersPage({ filter }: MembersPageProps) {
             <Search className="size-4" />
           </Button>
           <Button
-            variant={filterOpen ? 'secondary' : 'ghost'}
+            variant={filterOpen ? 'pressed' : 'ghost'}
             onClick={() => setFilterOpen((v) => !v)}
           >
             <ListFilter className="size-4" />
@@ -72,7 +72,14 @@ export function MembersPage({ filter }: MembersPageProps) {
         </Page.Actions>
       </Page.Header>
       <Page.Content>
-        {filterOpen && <FilterBar chips={chips} onAdd={addChip} onRemove={removeChip} />}
+        {filterOpen && (
+          <FilterBar
+            chips={chips}
+            onAdd={addChip}
+            onRemove={removeChip}
+            onSaveView={filter === 'all' ? () => {} : undefined}
+          />
+        )}
         <MemberList />
       </Page.Content>
     </Page>

@@ -64,7 +64,7 @@ export function PostsPage({ filter }: PostsPageProps) {
         <Page.Title>{TITLES[filter]}</Page.Title>
         <Page.Actions>
           <Button
-            variant={filterOpen ? 'secondary' : 'ghost'}
+            variant={filterOpen ? 'pressed' : 'ghost'}
             onClick={() => setFilterOpen((v) => !v)}
           >
             <ListFilter className="size-4" />
@@ -78,7 +78,14 @@ export function PostsPage({ filter }: PostsPageProps) {
       </Page.Header>
 
       <Page.Content>
-        {filterOpen && <FilterBar chips={chips} onAdd={addChip} onRemove={removeChip} />}
+        {filterOpen && (
+          <FilterBar
+            chips={chips}
+            onAdd={addChip}
+            onRemove={removeChip}
+            onSaveView={filter === 'all' ? () => {} : undefined}
+          />
+        )}
         {posts.length === 0 ? (
           <div className="py-16 t-byline text-muted">No posts in this view yet.</div>
         ) : (

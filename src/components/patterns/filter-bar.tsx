@@ -29,13 +29,15 @@ export function FilterBar({ chips, onAdd, onRemove, onSaveView }: FilterBarProps
           <Plus className="size-4" />
         </button>
       </div>
-      <button
-        type="button"
-        onClick={onSaveView}
-        className="t-button text-foreground px-3 py-2 cursor-pointer hover:bg-control-hover transition-colors"
-      >
-        Save view
-      </button>
+      {onSaveView && (
+        <button
+          type="button"
+          onClick={onSaveView}
+          className="t-button text-foreground px-3 py-2 cursor-pointer hover:bg-control-hover transition-colors"
+        >
+          Save view
+        </button>
+      )}
     </div>
   )
 }
