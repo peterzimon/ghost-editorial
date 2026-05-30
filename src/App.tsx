@@ -18,7 +18,7 @@ export default function App() {
     <HashRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<Navigate to="/content/posts" replace />} />
+          <Route index element={<Navigate to="/dashboard" replace />} />
 
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/dashboard/*" element={<DashboardPage />} />
@@ -50,7 +50,7 @@ export default function App() {
 
           <Route path="/posts" element={<Navigate to="/content/posts" replace />} />
 
-          <Route path="*" element={<Navigate to="/content/posts" replace />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>
     </HashRouter>

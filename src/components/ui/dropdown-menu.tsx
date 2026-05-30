@@ -17,7 +17,7 @@ const DropdownMenuContent = React.forwardRef<
       align={align}
       className={cn(
         'z-50 min-w-[134px] rounded-[4px] bg-white px-5 py-3 flex flex-col gap-3',
-        'shadow-[0px_100px_40px_rgba(0,0,0,0.07),0px_41.778px_16.711px_rgba(0,0,0,0.05),0px_22.336px_8.935px_rgba(0,0,0,0.04),0px_12.522px_5.009px_rgba(0,0,0,0.04),0px_6.65px_2.66px_rgba(0,0,0,0.03),0px_2.767px_1.107px_rgba(0,0,0,0.02)]',
+        'shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_40px_48px_rgba(0,0,0,0.06),0_12px_18px_rgba(0,0,0,0.05),0_4px_6px_rgba(0,0,0,0.04)]',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
         className,

@@ -38,7 +38,7 @@ function SubNavLink({ item }: { item: SubNavItem }) {
       to={item.to}
       end={item.end}
       className={({ isActive }) =>
-        cn('whitespace-nowrap h-full flex items-center hover:t-nav-active', isActive ? 't-nav-active' : 't-nav')
+        cn('whitespace-nowrap h-full flex items-center transition-colors hover:t-nav-active', isActive ? 't-nav-active' : 't-nav')
       }
     >
       {item.label}
