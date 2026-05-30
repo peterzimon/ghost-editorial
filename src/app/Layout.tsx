@@ -1,6 +1,6 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { TopNav } from '@/components/nav/TopNav'
-import { SubNav, type SubNavItem } from '@/components/nav/SubNav'
+import { TopNav } from '@/components/patterns/top-nav'
+import { SubNav, type SubNavItem } from '@/components/patterns/sub-nav'
 
 const CONTENT_LEFT: SubNavItem[] = [
   { label: 'Posts', to: '/content/posts' },
@@ -66,7 +66,7 @@ export function Layout() {
         <TopNav />
         {sub && <SubNav leftItems={sub.left} rightItems={sub.right} />}
       </div>
-      <main className="flex-1 w-full lg:max-w-[1280px] mx-auto pt-[60px]">
+      <main className="flex-1 w-full lg:max-w-[1280px] mx-auto px-10 pt-[60px]">
         <Outlet />
       </main>
     </div>

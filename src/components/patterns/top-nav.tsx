@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Logomark } from './Logomark'
+import { Logomark } from './logomark'
 import { cn } from '@/lib/cn'
 
 const SECTIONS = [
@@ -26,8 +26,8 @@ export function TopNav() {
             to={section.to}
             className={({ isActive }) =>
               cn(
-                'flex items-center border-t-[3px] border-transparent justify-center h-full',
-                isActive ? 't-nav-active border-accent' : 't-nav',
+                'flex items-center border-y-[3px] border-transparent justify-center h-full',
+                isActive ? 't-nav-active border-t-accent' : 't-nav',
               )
             }
           >
