@@ -8,6 +8,7 @@ import { TagsPage } from './features/tags/TagsPage'
 import { MediaPage } from './features/media/MediaPage'
 import { DashboardPage } from './features/dashboard/DashboardPage'
 import { NetworkPage } from './features/network/NetworkPage'
+import { ReaderPage } from './features/network/ReaderPage'
 import { MembersPage } from './features/audience/MembersPage'
 import { CommentsPage } from './features/audience/CommentsPage'
 import { AutomationsPage } from './features/growth/AutomationsPage'
@@ -27,7 +28,11 @@ export default function App() {
           <Route path="/dashboard/growth" element={<DashboardPage view="growth" />} />
           <Route path="/dashboard/sources" element={<DashboardPage view="sources" />} />
 
-          <Route path="/network" element={<NetworkPage />} />
+          <Route path="/network" element={<Navigate to="/network/reader" replace />} />
+          <Route path="/network/reader" element={<ReaderPage />} />
+          <Route path="/network/notes" element={<NetworkPage view="notes" />} />
+          <Route path="/network/explore" element={<NetworkPage view="explore" />} />
+          <Route path="/network/profile" element={<NetworkPage view="profile" />} />
 
           <Route path="/content" element={<Navigate to="/content/posts" replace />} />
           <Route path="/content/posts" element={<PostsPage filter="all" />} />

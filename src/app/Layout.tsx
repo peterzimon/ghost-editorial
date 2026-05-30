@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { TopNav } from '@/components/patterns/top-nav'
 import { SubNav, type SubNavItem } from '@/components/patterns/sub-nav'
+import { NetworkSubNavRight } from '@/features/network/NetworkSubNavRight'
 import { cn } from '@/lib/cn'
 
 const CONTENT_LEFT: SubNavItem[] = [
@@ -42,8 +44,22 @@ const GROWTH_LEFT: SubNavItem[] = [
   { label: 'Growth Tools', to: '/growth/tools' },
 ]
 
-function getSubNav(pathname: string): { left: SubNavItem[]; right?: SubNavItem[] } | null {
+const NETWORK_LEFT: SubNavItem[] = [
+  { label: 'Reader', to: '/network/reader' },
+  { label: 'Notes', to: '/network/notes' },
+  { label: 'Explore', to: '/network/explore' },
+  { label: 'Profile', to: '/network/profile' },
+]
+
+interface SubNavSpec {
+  left: SubNavItem[]
+  right?: SubNavItem[]
+  rightSlot?: ReactNode
+}
+
+function getSubNav(pathname: string): SubNavSpec | null {
   if (pathname.startsWith('/dashboard')) return { left: DASHBOARD_LEFT }
+  if (pathname.startsWith('/network')) return { left: NETWORK_LEFT, rightSlot: <NetworkSubNavRight /> }
   if (pathname.startsWith('/content/posts')) return { left: CONTENT_LEFT, right: POSTS_RIGHT }
   if (pathname.startsWith('/content')) return { left: CONTENT_LEFT }
   if (pathname.startsWith('/audience/members')) return { left: AUDIENCE_LEFT, right: AUDIENCE_RIGHT }
@@ -55,14 +71,14 @@ function getSubNav(pathname: string): { left: SubNavItem[]; right?: SubNavItem[]
 export function Layout() {
   const { pathname } = useLocation()
   const sub = getSubNav(pathname)
-  const fullBleed = pathname === '/site' || pathname === '/network'
+  const fullBleed = pathname === '/site'
 
   return (
     <div className="h-full bg-background flex flex-col pt-[52px]">
       <div className="fixed top-0 left-0 right-0 z-50 bg-background">
         <TopNav />
       </div>
-      {sub && <SubNav leftItems={sub.left} rightItems={sub.right} />}
+      {sub && <SubNav leftItems={sub.left} rightItems={sub.right} rightSlot={sub.rightSlot} />}
       <main
         className={cn(
           'flex-1 min-h-0 w-full',

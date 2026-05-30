@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 import { StableLabel } from './stable-label'
@@ -12,9 +13,21 @@ export type SubNavItem = {
 interface SubNavProps {
   leftItems: SubNavItem[]
   rightItems?: SubNavItem[]
+  /** Custom node for the right side. Takes precedence over rightItems when present. */
+  rightSlot?: ReactNode
 }
 
-export function SubNav({ leftItems, rightItems = [] }: SubNavProps) {
+export function SubNav({ leftItems, rightItems = [], rightSlot }: SubNavProps) {
+  const right = rightSlot ?? (
+    rightItems.length > 0 ? (
+      <div className="flex items-center h-full gap-6">
+        {rightItems.map((item) => (
+          <SubNavLink key={item.to} item={item} />
+        ))}
+      </div>
+    ) : null
+  )
+
   return (
     <div className="h-[52px] flex items-center justify-between px-10 w-full">
       <div className="flex items-center h-full gap-6">
@@ -22,13 +35,7 @@ export function SubNav({ leftItems, rightItems = [] }: SubNavProps) {
           <SubNavLink key={item.to} item={item} />
         ))}
       </div>
-      {rightItems.length > 0 && (
-        <div className="flex items-center h-full gap-6">
-          {rightItems.map((item) => (
-            <SubNavLink key={item.to} item={item} />
-          ))}
-        </div>
-      )}
+      {right}
     </div>
   )
 }
