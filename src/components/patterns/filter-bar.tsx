@@ -24,7 +24,7 @@ export function FilterBar({ chips, onAdd, onRemove, onSaveView }: FilterBarProps
           type="button"
           onClick={onAdd}
           aria-label="Add filter"
-          className="size-7 flex items-center justify-center rounded-full text-foreground hover:bg-control-hover transition-colors cursor-pointer"
+          className="size-7 flex items-center justify-center rounded-full text-foreground hover:bg-background transition-colors cursor-pointer"
         >
           <Plus className="size-4" />
         </button>
@@ -33,7 +33,7 @@ export function FilterBar({ chips, onAdd, onRemove, onSaveView }: FilterBarProps
         <button
           type="button"
           onClick={onSaveView}
-          className="t-button text-foreground px-3 py-2 cursor-pointer hover:bg-control-hover transition-colors"
+          className="t-button text-foreground px-3 py-2 cursor-pointer hover:bg-background transition-colors"
         >
           Save view
         </button>
