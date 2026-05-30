@@ -40,11 +40,11 @@
   --color-foreground: #191919;
   --color-muted: #959593;
   --color-border: #ededec;
-  --color-accent: #ef0e22;
+  --color-elevated: #f3f3f2;
+  --color-row-hover: #fafafa;
+  --color-control-hover: #ededec;
   --color-background: #ffffff;
-  --color-row-hover: rgba(243, 243, 242, 0.4);
-  --color-avatar-bg: #e0e4ff;
-  --color-avatar-fg: #4f4ca8;
+  --color-accent: #ef0e22;
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
   --font-serif-headline: 'Tiempos Headline', Georgia, serif;

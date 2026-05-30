@@ -1,6 +1,7 @@
 import { ListFilter, Plus, Search } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
+import { MemberList } from './MemberList'
 
 export type MembersFilter = 'all' | 'vip' | 'friends' | 'early-birds'
 
@@ -34,7 +35,9 @@ export function MembersPage({ filter }: MembersPageProps) {
           </Button>
         </Page.Actions>
       </Page.Header>
-      <Page.Content />
+      <Page.Content>
+        <MemberList />
+      </Page.Content>
     </Page>
   )
 }

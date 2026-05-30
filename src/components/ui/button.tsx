@@ -11,11 +11,11 @@ const buttonVariants = cva(
         primary:
           'bg-foreground text-white t-button hover:bg-foreground/90',
         secondary:
-          'bg-background text-foreground t-button border border-border hover:bg-row-hover',
+          'bg-background text-foreground t-button border border-border hover:bg-control-hover',
         ghost:
-          'bg-transparent text-foreground t-button hover:bg-row-hover',
+          'bg-transparent text-foreground t-button hover:bg-control-hover',
         icon:
-          'bg-background text-foreground border border-border hover:bg-row-hover',
+          'bg-background text-foreground border border-border hover:bg-control-hover',
       },
       size: {
         editorial: 'h-8 px-3 py-1',

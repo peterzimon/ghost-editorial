@@ -44,8 +44,8 @@ export function TopNav() {
         <a href="#" className="t-info text-muted">
           View site
         </a>
-        <div className="size-6 bg-avatar-bg flex items-center justify-center">
-          <span className="font-mono text-[12px] font-medium uppercase tracking-[0.03em] text-avatar-fg">
+        <div className="size-6 flex items-center justify-center bg-[#e0e4ff]">
+          <span className="font-mono text-[12px] font-medium uppercase tracking-[0.03em] text-[#4f4ca8]">
             Z
           </span>
         </div>
