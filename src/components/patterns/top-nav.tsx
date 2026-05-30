@@ -26,7 +26,7 @@ export function TopNav() {
             to={section.to}
             className={({ isActive }) =>
               cn(
-                'flex items-center border-y-[3px] border-transparent justify-center h-full',
+                'flex items-center border-y-[3px] border-transparent justify-center h-full hover:t-nav-active',
                 isActive ? 't-nav-active border-t-accent' : 't-nav',
               )
             }

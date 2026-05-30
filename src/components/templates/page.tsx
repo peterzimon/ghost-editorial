@@ -27,7 +27,7 @@ function PageActions({ children, className }: SlotProps) {
 }
 
 function PageContent({ children, className }: SlotProps) {
-  return <div className={cn('flex flex-col', className)}>{children}</div>
+  return <div className={cn('flex flex-col pb-10', className)}>{children}</div>
 }
 
 Page.Header = PageHeader
