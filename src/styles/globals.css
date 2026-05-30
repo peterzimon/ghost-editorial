@@ -3,8 +3,38 @@
 @import '@fontsource-variable/inter/index.css';
 @import '@fontsource-variable/inter/opsz-italic.css';
 @import '@fontsource-variable/geist-mono/index.css';
-@import '@fontsource-variable/lora/index.css';
-@import '@fontsource-variable/lora/wght-italic.css';
+
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('../assets/fonts/tiempos-headline-vf-roman.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Headline';
+  src: url('../assets/fonts/tiempos-headline-vf-italic.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('../assets/fonts/tiempos-text-vf-roman.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Tiempos Text';
+  src: url('../assets/fonts/tiempos-text-vf-italic.woff2') format('woff2-variations');
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+}
 
 @theme {
   --color-foreground: #191919;
@@ -17,7 +47,8 @@
   --color-avatar-fg: #4f4ca8;
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
-  --font-serif: 'Lora Variable', 'Lora', Georgia, serif;
+  --font-serif-headline: 'Tiempos Headline', Georgia, serif;
+  --font-serif-text: 'Tiempos Text', Georgia, serif;
   --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
 }
 
@@ -76,12 +107,11 @@ body {
 }
 
 @utility t-h1 {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif-headline);
   font-weight: 300;
   font-size: 52px;
   line-height: 1;
-  letter-spacing: -0.029em;
-  font-variation-settings: 'wght' 400;
+  letter-spacing: -0.01em;
 }
 
 @utility t-post-title {
@@ -94,7 +124,7 @@ body {
 }
 
 @utility t-byline {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif-text);
   font-style: italic;
   font-weight: 400;
   font-size: 15px;
