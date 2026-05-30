@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ListFilter, Plus, Search } from 'lucide-react'
+import { ListFilter, Plus, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
@@ -38,6 +38,8 @@ interface MembersPageProps {
 export function MembersPage({ filter }: MembersPageProps) {
   const [filterOpen, setFilterOpen] = useState(filter !== 'all')
   const [chips, setChips] = useState<FilterChip[]>(() => presetChips(filter))
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     setFilterOpen(filter !== 'all')
@@ -50,26 +52,56 @@ export function MembersPage({ filter }: MembersPageProps) {
   }
   const removeChip = (id: string) => setChips(chips.filter((c) => c.id !== id))
 
+  const openSearch = () => setSearchOpen(true)
+  const closeSearch = () => {
+    setSearchOpen(false)
+    setQuery('')
+  }
+
   return (
     <Page>
-      <Page.Header>
-        <Page.Title>{TITLES[filter]}</Page.Title>
-        <Page.Actions>
-          <Button variant="ghost" size="icon" aria-label="Search">
-            <Search className="size-4" />
-          </Button>
-          <Button
-            variant={filterOpen ? 'pressed' : 'ghost'}
-            onClick={() => setFilterOpen((v) => !v)}
-          >
-            <ListFilter className="size-4" />
-            Filter
-          </Button>
-          <Button variant="primary">
-            <Plus className="size-4" />
-            New member
-          </Button>
-        </Page.Actions>
+      <Page.Header className={searchOpen ? 'items-center pb-[20px]' : undefined}>
+        {searchOpen ? (
+          <>
+            <input
+              type="text"
+              autoFocus
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === 'Escape' && closeSearch()}
+              placeholder="Search members"
+              className="flex-1 t-h1 leading-[1.25] bg-transparent outline-none placeholder:text-border min-w-0 p-0 border-0"
+            />
+            <button
+              type="button"
+              onClick={closeSearch}
+              aria-label="Close search"
+              className="size-8 mr-2 flex items-center justify-center text-muted hover:text-foreground transition-colors cursor-pointer"
+            >
+              <X className="size-6" strokeWidth={1.25} />
+            </button>
+          </>
+        ) : (
+          <>
+            <Page.Title>{TITLES[filter]}</Page.Title>
+            <Page.Actions>
+              <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
+                <Search className="size-4" />
+              </Button>
+              <Button
+                variant={filterOpen ? 'pressed' : 'ghost'}
+                onClick={() => setFilterOpen((v) => !v)}
+              >
+                <ListFilter className="size-4" />
+                Filter
+              </Button>
+              <Button variant="primary">
+                <Plus className="size-4" />
+                New member
+              </Button>
+            </Page.Actions>
+          </>
+        )}
       </Page.Header>
       <Page.Content>
         {filterOpen && (
