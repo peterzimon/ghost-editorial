@@ -1,6 +1,7 @@
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
+import { AutomationList } from './AutomationList'
 
 export function AutomationsPage() {
   return (
@@ -14,7 +15,9 @@ export function AutomationsPage() {
           </Button>
         </Page.Actions>
       </Page.Header>
-      <Page.Content />
+      <Page.Content>
+        <AutomationList />
+      </Page.Content>
     </Page>
   )
 }
