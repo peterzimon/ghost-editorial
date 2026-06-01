@@ -7,6 +7,9 @@ import { SectionHeading } from '@/components/patterns/section-heading'
 import { cn } from '@/lib/cn'
 import { mockMembers, type Member } from './mockMembers'
 import { MemberAvatar } from './MemberAvatar'
+import { MemberSubscriptions } from './MemberSubscriptions'
+import { MemberNewsletters } from './MemberNewsletters'
+import { newslettersFor, subscriptionsFor } from './member-subscriptions-data'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -61,6 +64,8 @@ export function MemberDetailPage() {
   const { emailsReceived, emailsOpened, lastSeen } = deriveDetail(member)
   const labels = id === 'm2' ? ['VIP'] : ['Subscriber']
   const commentStatus: 'active' | 'blocked' = id === 'm2' ? 'blocked' : 'active'
+  const subscriptions = subscriptionsFor(member.id)
+  const newsletters = newslettersFor(member.id)
 
   return (
     <Page>
@@ -81,8 +86,14 @@ export function MemberDetailPage() {
         <div className="grid grid-cols-3 gap-10">
           <div className="col-span-2 flex flex-col gap-14 border-r border-border pr-10">
             <DetailsSection name={member.name} email={email} labels={labels} />
-            <PlaceholderSection title="Subscriptions" />
-            <PlaceholderSection title="Newsletters" />
+            <section>
+              <SectionHeading className="border-b-0 pb-0">Subscriptions</SectionHeading>
+              <MemberSubscriptions subscriptions={subscriptions} />
+            </section>
+            <section>
+              <SectionHeading className="border-b-0 pb-0">Newsletters</SectionHeading>
+              <MemberNewsletters newsletters={newsletters} />
+            </section>
           </div>
 
           <aside className="flex flex-col gap-10 pt-2">
@@ -164,15 +175,6 @@ function TextField({
         />
       )}
     </div>
-  )
-}
-
-function PlaceholderSection({ title }: { title: string }) {
-  return (
-    <section>
-      <SectionHeading>{title}</SectionHeading>
-      <p className="t-info text-muted mt-6">To be done</p>
-    </section>
   )
 }
 
