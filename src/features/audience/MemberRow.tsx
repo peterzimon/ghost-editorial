@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { ListRow } from '@/components/patterns/list-row'
 import { MemberAvatar } from './MemberAvatar'
 import type { Member } from './mockMembers'
@@ -9,8 +10,12 @@ function formatCreated(d: Date) {
 }
 
 export function MemberRow({ member }: { member: Member }) {
+  const navigate = useNavigate()
   return (
-    <ListRow className="flex gap-2 items-center py-4">
+    <ListRow
+      onClick={() => navigate(`/audience/members/${member.id}`)}
+      className="flex gap-2 items-center py-4"
+    >
       <div className="flex-1 min-w-0 flex gap-[14px] items-center">
         <MemberAvatar avatar={member.avatar} name={member.name} />
         <p className="text-[14px] font-medium text-foreground truncate">{member.name}</p>

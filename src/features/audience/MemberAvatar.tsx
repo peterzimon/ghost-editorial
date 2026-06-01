@@ -1,9 +1,17 @@
 import type { Avatar } from './mockMembers'
+import { cn } from '@/lib/cn'
 
-export function MemberAvatar({ avatar, name }: { avatar: Avatar; name: string }) {
+interface MemberAvatarProps {
+  avatar: Avatar
+  name: string
+  /** Tailwind class for sizing — defaults to size-8 (32px). */
+  className?: string
+}
+
+export function MemberAvatar({ avatar, name, className = 'size-8' }: MemberAvatarProps) {
   if (avatar.kind === 'photo') {
     return (
-      <div className="size-8 shrink-0 overflow-hidden">
+      <div className={cn('shrink-0 overflow-hidden', className)}>
         <img
           src={avatar.src}
           alt={name}
@@ -17,7 +25,10 @@ export function MemberAvatar({ avatar, name }: { avatar: Avatar; name: string })
 
   return (
     <div
-      className="size-8 shrink-0 flex items-center justify-center text-foreground text-[13px] font-semibold"
+      className={cn(
+        'shrink-0 flex items-center justify-center text-foreground text-[13px] font-semibold',
+        className,
+      )}
       style={{ backgroundColor: avatar.bg }}
     >
       {avatar.text}

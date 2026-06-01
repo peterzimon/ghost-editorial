@@ -2,7 +2,9 @@ import type { ReactNode } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { TopNav } from '@/components/patterns/top-nav'
 import { SubNav, type SubNavItem } from '@/components/patterns/sub-nav'
+import { Breadcrumb } from '@/components/patterns/breadcrumb'
 import { NetworkSubNavRight } from '@/features/network/NetworkSubNavRight'
+import { mockMembers } from '@/features/audience/mockMembers'
 import { cn } from '@/lib/cn'
 
 const CONTENT_LEFT: SubNavItem[] = [
@@ -51,8 +53,11 @@ const NETWORK_LEFT: SubNavItem[] = [
   { label: 'Profile', to: '/network/profile' },
 ]
 
+const MEMBER_FILTER_SLUGS = new Set(['vip', 'friends', 'early-birds'])
+
 interface SubNavSpec {
-  left: SubNavItem[]
+  left?: SubNavItem[]
+  leftSlot?: ReactNode
   right?: SubNavItem[]
   rightSlot?: ReactNode
 }
@@ -62,6 +67,23 @@ function getSubNav(pathname: string): SubNavSpec | null {
   if (pathname.startsWith('/network')) return { left: NETWORK_LEFT, rightSlot: <NetworkSubNavRight /> }
   if (pathname.startsWith('/content/posts')) return { left: CONTENT_LEFT, right: POSTS_RIGHT }
   if (pathname.startsWith('/content')) return { left: CONTENT_LEFT }
+
+  // Member detail page — swap the standard sub-nav for a breadcrumb.
+  const memberDetailMatch = pathname.match(/^\/audience\/members\/([^/]+)$/)
+  if (memberDetailMatch && !MEMBER_FILTER_SLUGS.has(memberDetailMatch[1])) {
+    const member = mockMembers.find((m) => m.id === memberDetailMatch[1])
+    return {
+      leftSlot: (
+        <Breadcrumb
+          items={[
+            { label: 'Members', to: '/audience/members' },
+            { label: member?.name ?? 'Member' },
+          ]}
+        />
+      ),
+    }
+  }
+
   if (pathname.startsWith('/audience/members')) return { left: AUDIENCE_LEFT, right: AUDIENCE_RIGHT }
   if (pathname.startsWith('/audience')) return { left: AUDIENCE_LEFT }
   if (pathname.startsWith('/growth')) return { left: GROWTH_LEFT }
@@ -78,7 +100,14 @@ export function Layout() {
       <div className="fixed top-0 left-0 right-0 z-50 bg-background">
         <TopNav />
       </div>
-      {sub && <SubNav leftItems={sub.left} rightItems={sub.right} rightSlot={sub.rightSlot} />}
+      {sub && (
+        <SubNav
+          leftItems={sub.left}
+          leftSlot={sub.leftSlot}
+          rightItems={sub.right}
+          rightSlot={sub.rightSlot}
+        />
+      )}
       <main
         className={cn(
           'flex-1 min-h-0 w-full',

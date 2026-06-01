@@ -10,6 +10,7 @@ import { DashboardPage } from './features/dashboard/DashboardPage'
 import { NetworkPage } from './features/network/NetworkPage'
 import { ReaderPage } from './features/network/ReaderPage'
 import { MembersPage } from './features/audience/MembersPage'
+import { MemberDetailPage } from './features/audience/MemberDetailPage'
 import { CommentsPage } from './features/audience/CommentsPage'
 import { AutomationsPage } from './features/growth/AutomationsPage'
 import { AutomationDetailPage } from './features/growth/AutomationDetailPage'
@@ -54,6 +55,7 @@ export default function App() {
           <Route path="/audience/members/vip" element={<MembersPage filter="vip" />} />
           <Route path="/audience/members/friends" element={<MembersPage filter="friends" />} />
           <Route path="/audience/members/early-birds" element={<MembersPage filter="early-birds" />} />
+          <Route path="/audience/members/:id" element={<MemberDetailPage />} />
           <Route path="/audience/comments" element={<CommentsPage />} />
 
           <Route path="/growth" element={<Navigate to="/growth/automations" replace />} />
