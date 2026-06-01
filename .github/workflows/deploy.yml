@@ -1,8 +1,11 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [main]
+  # Auto-deploy on push is disabled until a custom subdomain is set up
+  # (with base: '/' in vite.config.ts the GH Pages project URL 404s).
+  # Re-enable by uncommenting:
+  # push:
+  #   branches: [main]
   workflow_dispatch:
 
 permissions:

@@ -1,16 +1,10 @@
-import { Calendar, ChevronDown } from 'lucide-react'
+import { Calendar, ChevronDown, LayoutGrid } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
+import { STATS } from './dashboard-data'
+import { StatCard } from './StatCard'
 
 export type DashboardView = 'overview' | 'web-analytics' | 'newsletters' | 'growth' | 'sources'
-
-const TITLES: Record<DashboardView, string> = {
-  overview: 'Overview',
-  'web-analytics': 'Web Analytics',
-  newsletters: 'Newsletters',
-  growth: 'Growth',
-  sources: 'Sources',
-}
 
 interface DashboardPageProps {
   view: DashboardView
@@ -19,9 +13,12 @@ interface DashboardPageProps {
 export function DashboardPage({ view }: DashboardPageProps) {
   return (
     <Page>
-      <Page.Header>
-        <Page.Title>{TITLES[view]}</Page.Title>
+      <Page.Header className="border-b-0">
+        <Page.Title>Dashboard</Page.Title>
         <Page.Actions>
+          <Button variant="ghost" size="icon" aria-label="Customize dashboard">
+            <LayoutGrid className="size-4" />
+          </Button>
           <Button variant="ghost">
             <Calendar className="size-4" />
             Last 30 days
@@ -29,7 +26,15 @@ export function DashboardPage({ view }: DashboardPageProps) {
           </Button>
         </Page.Actions>
       </Page.Header>
-      <Page.Content />
+      <Page.Content>
+        {view === 'overview' ? (
+          <section className="grid grid-cols-3 gap-8 pt-2">
+            {STATS.map((stat) => (
+              <StatCard key={stat.label} stat={stat} />
+            ))}
+          </section>
+        ) : null}
+      </Page.Content>
     </Page>
   )
 }
