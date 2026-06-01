@@ -101,12 +101,14 @@ export function Layout() {
         <TopNav />
       </div>
       {sub && (
-        <SubNav
-          leftItems={sub.left}
-          leftSlot={sub.leftSlot}
-          rightItems={sub.right}
-          rightSlot={sub.rightSlot}
-        />
+        <div className="relative z-20">
+          <SubNav
+            leftItems={sub.left}
+            leftSlot={sub.leftSlot}
+            rightItems={sub.right}
+            rightSlot={sub.rightSlot}
+          />
+        </div>
       )}
       <main
         className={cn(

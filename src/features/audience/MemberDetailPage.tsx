@@ -9,6 +9,8 @@ import { mockMembers, type Member } from './mockMembers'
 import { MemberAvatar } from './MemberAvatar'
 import { MemberSubscriptions } from './MemberSubscriptions'
 import { MemberNewsletters } from './MemberNewsletters'
+import { MemberDetailMap } from './MemberDetailMap'
+import { coordsFor } from './city-coords'
 import { newslettersFor, subscriptionsFor } from './member-subscriptions-data'
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
@@ -69,18 +71,27 @@ export function MemberDetailPage() {
 
   return (
     <Page>
-      <Page.Header className="items-center">
-        <div className="flex-1 flex items-center gap-4">
-          <MemberAvatar avatar={member.avatar} name={member.name} className="size-10" />
-          <h1 className="t-h1">{member.name}</h1>
+      <div className="relative">
+        <div
+          aria-hidden
+          className="absolute -top-[112px] bottom-0 z-0 pointer-events-none overflow-hidden"
+          style={{ left: '50%', width: '100vw', transform: 'translateX(-50%)' }}
+        >
+          <MemberDetailMap lat={coordsFor(member.location)[0]} lng={coordsFor(member.location)[1]} />
         </div>
-        <Page.Actions>
-          <Button variant="ghost" size="icon" aria-label="More actions">
-            <MoreHorizontal className="size-4" />
-          </Button>
-          <Button variant="primary">Save</Button>
-        </Page.Actions>
-      </Page.Header>
+        <Page.Header className="relative z-10 items-center">
+          <div className="flex-1 flex items-center gap-4">
+            <MemberAvatar avatar={member.avatar} name={member.name} className="size-10" />
+            <h1 className="t-h1">{member.name}</h1>
+          </div>
+          <Page.Actions>
+            <Button variant="ghost" size="icon" aria-label="More actions">
+              <MoreHorizontal className="size-4" />
+            </Button>
+            <Button variant="primary">Save</Button>
+          </Page.Actions>
+        </Page.Header>
+      </div>
 
       <Page.Content className="pt-8">
         <div className="grid grid-cols-3 gap-10">
