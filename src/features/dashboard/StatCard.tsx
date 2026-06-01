@@ -29,7 +29,7 @@ export function StatCard({ stat, className }: StatCardProps) {
         />
       </div>
 
-      <div className="mt-2 flex items-baseline justify-between t-mono text-muted">
+      <div className="mt-2 flex items-baseline justify-between t-nav">
         <span>{stat.rangeStart}</span>
         <span>{stat.rangeEnd}</span>
       </div>
