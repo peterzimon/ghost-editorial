@@ -1,6 +1,7 @@
 interface SparklineProps {
   data: number[]
-  color: string
+  lineColor: string
+  fillColor: string
   className?: string
 }
 
@@ -33,7 +34,7 @@ function smoothPath(points: ReadonlyArray<readonly [number, number]>): string {
   return segs.join(' ')
 }
 
-export function Sparkline({ data, color, className }: SparklineProps) {
+export function Sparkline({ data, lineColor, fillColor, className }: SparklineProps) {
   if (data.length < 2) return null
 
   const min = Math.min(...data)
@@ -56,10 +57,10 @@ export function Sparkline({ data, color, className }: SparklineProps) {
       className={className}
       aria-hidden
     >
-      <path d={areaPath} fill={color} fillOpacity={0.08} />
+      <path d={areaPath} fill={fillColor} fillOpacity={0.3} />
       <path
         d={linePath}
-        stroke={color}
+        stroke={lineColor}
         strokeWidth={1.75}
         strokeLinecap="round"
         strokeLinejoin="round"

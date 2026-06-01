@@ -13,7 +13,7 @@ interface DashboardPageProps {
 export function DashboardPage({ view }: DashboardPageProps) {
   return (
     <Page>
-      <Page.Header className="border-b-0">
+      <Page.Header>
         <Page.Title>Dashboard</Page.Title>
         <Page.Actions>
           <Button variant="ghost" size="icon" aria-label="Customize dashboard">
