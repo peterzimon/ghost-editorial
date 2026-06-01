@@ -8,7 +8,7 @@ function formatNumber(n: number): string {
 
 export function LatestPostCard({ post }: { post: DashboardPost }) {
   return (
-    <aside className="bg-elevated p-6 flex flex-col gap-6">
+    <aside className="bg-elevated p-8 flex flex-col gap-6">
       <img
         src={post.thumbnail}
         alt=""

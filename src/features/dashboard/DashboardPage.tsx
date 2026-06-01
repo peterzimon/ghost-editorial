@@ -6,6 +6,7 @@ import { LATEST_POST, RECENT_POSTS } from './dashboard-posts-data'
 import { StatCard } from './StatCard'
 import { LatestPostCard } from './LatestPostCard'
 import { TopPostsList } from './TopPostsList'
+import { AnalyticsBanner } from './AnalyticsBanner'
 
 export type DashboardView = 'overview' | 'web-analytics' | 'newsletters' | 'growth' | 'sources'
 
@@ -42,6 +43,9 @@ export function DashboardPage({ view }: DashboardPageProps) {
               <div className="col-span-2">
                 <TopPostsList posts={RECENT_POSTS} />
               </div>
+            </section>
+            <section className="pt-12">
+              <AnalyticsBanner />
             </section>
           </>
         ) : null}
