@@ -60,7 +60,7 @@ export default function App() {
 
           <Route path="/growth" element={<Navigate to="/growth/automations" replace />} />
           <Route path="/growth/automations" element={<AutomationsPage />} />
-          <Route path="/growth/tools" element={<GrowthToolsPage />} />
+          <Route path="/growth/offers" element={<GrowthToolsPage />} />
 
           <Route path="/site" element={<SitePreviewPage />} />
 

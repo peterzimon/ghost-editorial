@@ -43,7 +43,7 @@ const AUDIENCE_RIGHT: SubNavItem[] = [
 
 const GROWTH_LEFT: SubNavItem[] = [
   { label: 'Automations', to: '/growth/automations' },
-  { label: 'Growth Tools', to: '/growth/tools' },
+  { label: 'Offers', to: '/growth/offers' },
 ]
 
 const NETWORK_LEFT: SubNavItem[] = [

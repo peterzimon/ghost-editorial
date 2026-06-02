@@ -4,7 +4,7 @@ export function GrowthToolsPage() {
   return (
     <Page>
       <Page.Header>
-        <Page.Title>Growth tools</Page.Title>
+        <Page.Title>Offers</Page.Title>
       </Page.Header>
       <Page.Content />
     </Page>
