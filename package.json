@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "encrypt": "staticrypt dist/index.html -p $STATICRYPT_PASSWORD --short -d dist",
+    "encrypt": "staticrypt dist/index.html -p $STATICRYPT_PASSWORD -t staticrypt-template.html --template-title 'Shmøergh' --template-instructions 'Editorial prototype. Enter the shared password to continue.' --template-placeholder Password --template-button Unlock --template-error 'Wrong password. Try again.' --short -d dist",
     "deploy": "gh-pages -d dist -t true"
   },
   "dependencies": {
