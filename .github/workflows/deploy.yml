@@ -1,11 +1,8 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Auto-deploy on push is disabled until a custom subdomain is set up
-  # (with base: '/' in vite.config.ts the GH Pages project URL 404s).
-  # Re-enable by uncommenting:
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -35,6 +32,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - run: pnpm build
+
+      - name: Encrypt index.html with staticrypt
+        env:
+          STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
+        run: pnpm encrypt
 
       - uses: actions/configure-pages@v5
 
