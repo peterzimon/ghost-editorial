@@ -5,7 +5,7 @@ export function Logomark({ className }: { className?: string }) {
     <div className={`size-6 flex items-center justify-center ${className ?? ''}`}>
       <img
         src={logoUrl}
-        alt="Ghost"
+        alt="Shmøergh"
         className="size-full object-contain"
         draggable={false}
       />

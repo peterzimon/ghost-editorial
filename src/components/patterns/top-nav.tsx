@@ -25,7 +25,7 @@ export function TopNav() {
         <NavLink to="/" className="group flex items-center gap-3 text-foreground">
           <Logomark />
           <span className="font-serif-headline text-[16px] leading-none tracking-[-0.01em] opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:delay-500">
-            The Blueprint
+            Shmøergh
           </span>
         </NavLink>
       </div>
