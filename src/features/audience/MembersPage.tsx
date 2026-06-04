@@ -3,16 +3,17 @@ import { ListFilter, MoreHorizontal, Plus, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
+import { ViewTabs, type ViewTabItem } from '@/components/patterns/view-tabs'
 import { MemberList } from './MemberList'
 
 export type MembersFilter = 'all' | 'vip' | 'friends' | 'early-birds'
 
-const TITLES: Record<MembersFilter, string> = {
-  all: 'Members',
-  vip: 'VIP',
-  friends: 'Friends & Family',
-  'early-birds': 'Early birds',
-}
+const VIEWS: ViewTabItem[] = [
+  { label: 'All members', to: '/audience/members', end: true },
+  { label: 'VIP', to: '/audience/members/vip' },
+  { label: 'Friends & Family', to: '/audience/members/friends' },
+  { label: 'Early birds', to: '/audience/members/early-birds' },
+]
 
 const MEMBER_FILTER_POOL: FilterChip[] = [
   { id: 'status', field: 'Member status', value: 'Complimentary' },
@@ -83,7 +84,7 @@ export function MembersPage({ filter }: MembersPageProps) {
           </>
         ) : (
           <>
-            <Page.Title>{TITLES[filter]}</Page.Title>
+            <Page.Title>Members</Page.Title>
             <Page.Actions>
               <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
                 <Search className="size-4" />
@@ -107,6 +108,7 @@ export function MembersPage({ filter }: MembersPageProps) {
         )}
       </Page.Header>
       <Page.Content>
+        {!searchOpen && <ViewTabs items={VIEWS} className="pt-6 pb-2" />}
         {filterOpen && (
           <FilterBar
             chips={chips}

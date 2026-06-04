@@ -4,6 +4,8 @@ import { MoreHorizontal, ShieldAlert } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { SectionHeading } from '@/components/patterns/section-heading'
+import { Breadcrumb } from '@/components/patterns/breadcrumb'
+import { SIDEBAR_WIDTH_PX } from '@/components/patterns/sidebar'
 import { cn } from '@/lib/cn'
 import { mockMembers, type Member } from './mockMembers'
 import { MemberAvatar } from './MemberAvatar'
@@ -71,11 +73,20 @@ export function MemberDetailPage() {
 
   return (
     <Page>
-      <div className="relative">
+      <Breadcrumb
+        items={[
+          { label: 'Members', to: '/audience/members' },
+          { label: member.name },
+        ]}
+      />
+      <div className="relative mt-6">
         <div
           aria-hidden
-          className="absolute -top-[112px] bottom-0 z-0 pointer-events-none overflow-hidden"
-          style={{ left: '50%', width: '100vw', transform: 'translateX(-50%)' }}
+          className="absolute -top-[88px] bottom-0 z-0 pointer-events-none overflow-hidden"
+          style={{
+            left: `calc((${SIDEBAR_WIDTH_PX}px + 100% - 100vw) / 2)`,
+            right: `calc((${SIDEBAR_WIDTH_PX}px + 100% - 100vw) / 2)`,
+          }}
         >
           <MemberDetailMap lat={coordsFor(member.location)[0]} lng={coordsFor(member.location)[1]} />
         </div>

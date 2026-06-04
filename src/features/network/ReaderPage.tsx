@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Page } from '@/components/templates/page'
+import { NetworkSubNavRight } from './NetworkSubNavRight'
 import { READER_ARTICLES, type ReaderCategory } from './reader-data'
 import { ReaderCategoryPills } from './ReaderCategoryPills'
 import { ReaderArticleRow } from './ReaderArticleRow'
@@ -12,6 +13,9 @@ export function ReaderPage() {
     <Page>
       <Page.Header>
         <Page.Title>Reader</Page.Title>
+        <Page.Actions>
+          <NetworkSubNavRight />
+        </Page.Actions>
       </Page.Header>
       <Page.Content className="gap-6 pt-6">
         <ReaderCategoryPills active={category} onChange={setCategory} />

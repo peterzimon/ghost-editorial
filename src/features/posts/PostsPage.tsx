@@ -3,17 +3,18 @@ import { ListFilter, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
+import { ViewTabs, type ViewTabItem } from '@/components/patterns/view-tabs'
 import { mockPosts, type PostStatus } from './mockPosts'
 import { PostRow } from './PostRow'
 
 type PostsFilter = 'all' | PostStatus
 
-const TITLES: Record<PostsFilter, string> = {
-  all: 'Posts',
-  draft: 'Drafts',
-  scheduled: 'Scheduled',
-  published: 'Published',
-}
+const VIEWS: ViewTabItem[] = [
+  { label: 'All posts', to: '/content/posts', end: true },
+  { label: 'Drafts', to: '/content/posts/drafts' },
+  { label: 'Scheduled', to: '/content/posts/scheduled' },
+  { label: 'Published', to: '/content/posts/published' },
+]
 
 const STATUS_LABEL: Record<PostStatus, string> = {
   draft: 'Draft',
@@ -61,7 +62,7 @@ export function PostsPage({ filter }: PostsPageProps) {
   return (
     <Page>
       <Page.Header>
-        <Page.Title>{TITLES[filter]}</Page.Title>
+        <Page.Title>Posts</Page.Title>
         <Page.Actions>
           <Button
             variant={filterOpen ? 'pressed' : 'ghost'}
@@ -78,6 +79,7 @@ export function PostsPage({ filter }: PostsPageProps) {
       </Page.Header>
 
       <Page.Content>
+        <ViewTabs items={VIEWS} className="pt-6 pb-2" />
         {filterOpen && (
           <FilterBar
             chips={chips}
