@@ -1,7 +1,6 @@
 @import 'tailwindcss';
 
-@import '@fontsource-variable/inter/opsz.css';
-@import '@fontsource-variable/inter/opsz-italic.css';
+@import url('https://rsms.me/inter/inter.css');
 @import '@fontsource-variable/geist-mono/index.css';
 
 @theme {
@@ -17,9 +16,9 @@
   --color-accent: #ef0e22;
   --color-positive: #16a34a;
 
-  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
-  --font-serif-headline: 'Inter Variable', 'Inter', system-ui, sans-serif;
-  --font-serif-text: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter var', 'Inter', system-ui, sans-serif;
+  --font-serif-headline: 'Inter var', 'Inter', system-ui, sans-serif;
+  --font-serif-text: 'Inter var', 'Inter', system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
 }
 
@@ -82,10 +81,10 @@ body {
 
 @utility t-h1 {
   font-family: var(--font-sans);
-  font-weight: 400;
+  font-weight: 500;
   font-size: 44px;
   line-height: 1.05;
-  letter-spacing: -0.022em;
+  letter-spacing: -0.04em;
   font-variation-settings: 'opsz' 32, 'wght' 500;
   font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }

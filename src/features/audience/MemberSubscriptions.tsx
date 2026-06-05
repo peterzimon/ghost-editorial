@@ -55,7 +55,7 @@ function SubscriptionRow({ subscription }: { subscription: Subscription }) {
     <div className="flex items-center gap-6 py-5 border-b border-border">
       <div className="w-[100px] shrink-0 flex flex-col gap-2">
         <p
-          className="font-sans text-[28px] leading-none tracking-[-0.01em] text-foreground"
+          className="font-sans text-[28px] leading-none tracking-[-0.025em] text-foreground"
           style={{ fontVariationSettings: "'opsz' 32, 'wght' 400" }}
         >
           {subscription.currency}

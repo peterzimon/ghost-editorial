@@ -110,7 +110,7 @@ export function Sidebar() {
       >
         <span className="flex items-center gap-3">
           <Logomark />
-          <span className="font-serif-headline text-[18px] font-medium leading-none tracking-[-0.01em]">
+          <span className="font-serif-headline text-[18px] font-[500] leading-none tracking-[-0.01em]">
             Shmøergh
           </span>
         </span>
