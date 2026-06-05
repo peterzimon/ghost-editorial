@@ -94,7 +94,7 @@ body {
   font-weight: 500;
   font-size: 21px;
   line-height: 1.35;
-  letter-spacing: -0.013em;
+  letter-spacing: -0.025em;
   font-variation-settings: 'opsz' 28, 'wght' 500;
   font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }
