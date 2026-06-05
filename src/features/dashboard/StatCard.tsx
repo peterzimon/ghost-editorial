@@ -13,7 +13,7 @@ export function StatCard({ stat, className }: StatCardProps) {
       <div className="flex flex-col gap-2">
         <p className="t-mono text-muted">{stat.label}</p>
         <p
-          className="font-sans text-[32px] leading-none tracking-[-0.025em] text-foreground"
+          className="font-sans text-[32px] leading-none tracking-[-0.01em] text-foreground"
           style={{ fontVariationSettings: "'opsz' 36, 'wght' 400" }}
         >
           {stat.value}

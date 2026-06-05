@@ -227,7 +227,7 @@ function StatNumber({ label, value }: { label: string; value: string }) {
     <div className="flex flex-col gap-2">
       <p className="t-info text-muted">{label}</p>
       <p
-        className="font-sans text-[32px] leading-none tracking-[-0.025em] text-foreground"
+        className="font-sans text-[32px] leading-none tracking-[-0.01em] text-foreground"
         style={{ fontVariationSettings: "'opsz' 36, 'wght' 400" }}
       >
         {value}

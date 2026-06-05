@@ -53,7 +53,7 @@ function Stat({ label, value }: { label: string; value: number }) {
     <div className="flex flex-col gap-2">
       <p className="t-mono text-muted">{label}</p>
       <p
-        className="font-sans text-[26px] leading-none tracking-[-0.025em] text-foreground"
+        className="font-sans text-[26px] leading-none tracking-[-0.01em] text-foreground"
         style={{ fontVariationSettings: "'opsz' 32, 'wght' 400" }}
       >
         {formatNumber(value)}
