@@ -53,7 +53,7 @@ export function MembersPage({ filter }: MembersPageProps) {
 
   return (
     <Page>
-      <Page.Header className={searchOpen ? 'items-center pb-[20px]' : undefined}>
+      <Page.Header className="min-h-[80px]">
         {searchOpen ? (
           <>
             <input
@@ -63,7 +63,7 @@ export function MembersPage({ filter }: MembersPageProps) {
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Escape' && closeSearch()}
               placeholder="Search members"
-              className="flex-1 t-h1 leading-[1.25] bg-transparent outline-none placeholder:text-border min-w-0 p-0 border-0"
+              className="block flex-1 t-h1 bg-transparent outline-none placeholder:text-border min-w-0 p-0 border-0"
             />
             <button
               type="button"
