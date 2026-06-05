@@ -73,7 +73,7 @@ export function MemberDetailPage() {
 
   return (
     <Page>
-      <div className="relative z-10 py-[10px]">
+      <div className="absolute top-[46px] left-10 right-10 z-20">
         <Breadcrumb
           items={[
             { label: 'Members', to: '/audience/members' },
