@@ -7,7 +7,7 @@ interface SlotProps {
 }
 
 function Page({ children, className }: SlotProps) {
-  return <div className={cn('flex flex-col', className)}>{children}</div>
+  return <div className={cn('flex flex-col -mt-2', className)}>{children}</div>
 }
 
 function PageHeader({ children, className }: SlotProps) {
