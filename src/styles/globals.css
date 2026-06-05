@@ -5,6 +5,8 @@
 @import '@fontsource-variable/geist-mono/index.css';
 
 @theme {
+  --default-font-feature-settings: 'dlig', 'zero', 'ss01';
+
   --color-foreground: #191919;
   --color-muted: #959593;
   --color-border: #ededec;
@@ -32,6 +34,9 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans);
   font-variation-settings: 'opsz' 14;
+  font-feature-settings: 'dlig', 'zero', 'ss01';
+  font-variant-numeric: slashed-zero;
+  font-variant-ligatures: discretionary-ligatures;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -82,6 +87,7 @@ body {
   line-height: 1.05;
   letter-spacing: -0.022em;
   font-variation-settings: 'opsz' 32, 'wght' 500;
+  font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }
 
 @utility t-post-title {
@@ -91,6 +97,7 @@ body {
   line-height: 1.35;
   letter-spacing: -0.013em;
   font-variation-settings: 'opsz' 28, 'wght' 500;
+  font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }
 
 @utility t-byline {
