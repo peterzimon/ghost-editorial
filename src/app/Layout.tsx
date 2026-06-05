@@ -12,8 +12,8 @@ export function Layout() {
       <Sidebar />
       <main
         className={cn(
-          'min-h-full w-full',
-          fullBleed ? '' : 'lg:max-w-[1280px] mx-auto px-10',
+          'w-full',
+          fullBleed ? 'h-full' : 'min-h-full lg:max-w-[1280px] mx-auto px-10',
         )}
       >
         {!fullBleed && <TopBar />}

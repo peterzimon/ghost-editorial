@@ -42,7 +42,7 @@ interface SidebarGroup {
 type SidebarEntry = SidebarLeaf | SidebarGroup
 
 const ENTRIES: SidebarEntry[] = [
-  { kind: 'leaf', label: 'Dashboard', to: '/dashboard', icon: TrendingUp },
+  { kind: 'leaf', label: 'Analytics', to: '/analytics', icon: TrendingUp },
   { kind: 'leaf', label: 'Network', to: '/network', icon: Globe },
   {
     kind: 'group',

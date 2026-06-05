@@ -16,8 +16,8 @@ export function TopBar() {
   return (
     <div className="relative z-10 h-[100px] flex items-center justify-end gap-5">
       <div className="flex items-center gap-2">
-        <div className="size-2 bg-accent" />
-        <span className="t-info text-accent">27 Online</span>
+        <div className="size-2 bg-positive" />
+        <span className="t-info text-positive">27 Online</span>
       </div>
 
       <NavLink
