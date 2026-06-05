@@ -1,42 +1,11 @@
 @import 'tailwindcss';
 
-@import '@fontsource-variable/inter/index.css';
-@import '@fontsource-variable/inter/opsz-italic.css';
+@import url('https://rsms.me/inter/inter.css');
 @import '@fontsource-variable/geist-mono/index.css';
 
-@font-face {
-  font-family: 'Tiempos Headline';
-  src: url('../assets/fonts/tiempos-headline-vf-roman.woff2') format('woff2-variations');
-  font-weight: 100 1000;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Tiempos Headline';
-  src: url('../assets/fonts/tiempos-headline-vf-italic.woff2') format('woff2-variations');
-  font-weight: 100 1000;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Tiempos Text';
-  src: url('../assets/fonts/tiempos-text-vf-roman.woff2') format('woff2-variations');
-  font-weight: 100 1000;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Tiempos Text';
-  src: url('../assets/fonts/tiempos-text-vf-italic.woff2') format('woff2-variations');
-  font-weight: 100 1000;
-  font-style: italic;
-  font-display: swap;
-}
-
 @theme {
+  --default-font-feature-settings: 'dlig', 'zero', 'ss01';
+
   --color-foreground: #191919;
   --color-muted: #959593;
   --color-border: #ededec;
@@ -47,9 +16,9 @@
   --color-accent: #ef0e22;
   --color-positive: #16a34a;
 
-  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
-  --font-serif-headline: 'Tiempos Headline', Georgia, serif;
-  --font-serif-text: 'Tiempos Text', Georgia, serif;
+  --font-sans: 'Inter var', 'Inter', system-ui, sans-serif;
+  --font-serif-headline: 'Inter var', 'Inter', system-ui, sans-serif;
+  --font-serif-text: 'Inter var', 'Inter', system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', 'Geist Mono', ui-monospace, monospace;
 }
 
@@ -64,6 +33,9 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-sans);
   font-variation-settings: 'opsz' 14;
+  font-feature-settings: 'dlig', 'zero', 'ss01';
+  font-variant-numeric: slashed-zero;
+  font-variant-ligatures: discretionary-ligatures;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -108,11 +80,13 @@ body {
 }
 
 @utility t-h1 {
-  font-family: var(--font-serif-headline);
-  font-weight: 300;
-  font-size: 52px;
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  font-variation-settings: 'opsz' 32, 'wght' 500;
+  font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }
 
 @utility t-post-title {
@@ -120,17 +94,18 @@ body {
   font-weight: 500;
   font-size: 21px;
   line-height: 1.35;
-  letter-spacing: -0.013em;
+  letter-spacing: -0.025em;
   font-variation-settings: 'opsz' 28, 'wght' 500;
+  font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }
 
 @utility t-byline {
-  font-family: var(--font-serif-text);
+  font-family: var(--font-sans);
   font-style: italic;
   font-weight: 400;
   font-size: 15px;
-  line-height: 1.35;
-  letter-spacing: -0.02em;
+  line-height: 1.4;
+  font-variation-settings: 'opsz' 28;
 }
 
 @utility t-button {

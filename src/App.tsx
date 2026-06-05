@@ -25,13 +25,13 @@ export default function App() {
         <Route path="/growth/automations/:id" element={<AutomationDetailPage />} />
 
         <Route element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route index element={<Navigate to="/analytics" replace />} />
 
-          <Route path="/dashboard" element={<DashboardPage view="overview" />} />
-          <Route path="/dashboard/web-analytics" element={<DashboardPage view="web-analytics" />} />
-          <Route path="/dashboard/newsletters" element={<DashboardPage view="newsletters" />} />
-          <Route path="/dashboard/growth" element={<DashboardPage view="growth" />} />
-          <Route path="/dashboard/sources" element={<DashboardPage view="sources" />} />
+          <Route path="/analytics" element={<DashboardPage view="overview" />} />
+          <Route path="/analytics/web-analytics" element={<DashboardPage view="web-analytics" />} />
+          <Route path="/analytics/newsletters" element={<DashboardPage view="newsletters" />} />
+          <Route path="/analytics/growth" element={<DashboardPage view="growth" />} />
+          <Route path="/analytics/sources" element={<DashboardPage view="sources" />} />
 
           <Route path="/network" element={<Navigate to="/network/reader" replace />} />
           <Route path="/network/reader" element={<ReaderPage />} />
@@ -66,7 +66,7 @@ export default function App() {
 
           <Route path="/posts" element={<Navigate to="/content/posts" replace />} />
 
-          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="*" element={<Navigate to="/analytics" replace />} />
         </Route>
       </Routes>
     </HashRouter>
