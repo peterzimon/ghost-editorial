@@ -1,10 +1,11 @@
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   BadgePercent,
   FileText,
   Globe,
   Image,
+  LayoutTemplate,
   LogOut,
   MessageSquare,
   PenLine,
@@ -22,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Logomark } from './logomark'
+import { SearchPalette } from './search-palette'
 import { StableLabel } from './stable-label'
 import { cn } from '@/lib/cn'
 
@@ -51,6 +53,7 @@ type SidebarEntry = SidebarLeaf | SidebarGroup
 
 const ENTRIES: SidebarEntry[] = [
   { kind: 'leaf', label: 'Analytics', to: '/analytics', icon: TrendingUp },
+  { kind: 'leaf', label: 'View site', to: '/site', icon: LayoutTemplate },
   { kind: 'leaf', label: 'Network', to: '/network', icon: Globe },
   {
     kind: 'group',
@@ -106,6 +109,18 @@ export const SIDEBAR_WIDTH_PX = 280
 
 export function Sidebar() {
   const { pathname } = useLocation()
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setSearchOpen((v) => !v)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
     <aside
@@ -134,7 +149,7 @@ export function Sidebar() {
         )}
       </nav>
 
-      <div className="p-8">
+      <div className="p-8 flex items-center gap-2">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
@@ -163,6 +178,8 @@ export function Sidebar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </aside>
   )
 }
