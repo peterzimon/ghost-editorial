@@ -83,32 +83,36 @@ export function MembersPage({ filter }: MembersPageProps) {
             </button>
           </>
         ) : (
-          <>
-            <Page.Title>Members</Page.Title>
-            <Page.Actions>
-              <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
-                <Search className="size-4" />
-              </Button>
-              <Button variant="ghost" size="icon" aria-label="More actions">
-                <MoreHorizontal className="size-4" />
-              </Button>
-              <Button
-                variant={filterOpen ? 'pressed' : 'ghost'}
-                onClick={() => setFilterOpen((v) => !v)}
-              >
-                <ListFilter className="size-4" />
-                Filter
-              </Button>
-              <Button variant="primary">
-                <Plus className="size-4" />
-                New member
-              </Button>
-            </Page.Actions>
-          </>
+          <Page.Title>Members</Page.Title>
         )}
       </Page.Header>
+
+      {!searchOpen && (
+        <div className="flex items-center justify-between gap-3 py-4 border-b border-border">
+          <ViewTabs items={VIEWS} />
+          <Page.Actions>
+            <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
+              <Search className="size-4" />
+            </Button>
+            <Button variant="ghost" size="icon" aria-label="More actions">
+              <MoreHorizontal className="size-4" />
+            </Button>
+            <Button
+              variant={filterOpen ? 'pressed' : 'ghost'}
+              onClick={() => setFilterOpen((v) => !v)}
+            >
+              <ListFilter className="size-4" />
+              Filter
+            </Button>
+            <Button variant="primary">
+              <Plus className="size-4" />
+              New member
+            </Button>
+          </Page.Actions>
+        </div>
+      )}
+
       <Page.Content>
-        {!searchOpen && <ViewTabs items={VIEWS} className="pt-6 pb-2" />}
         {filterOpen && (
           <FilterBar
             chips={chips}

@@ -24,7 +24,7 @@ export function TopNav() {
       <div className="flex items-center w-[260px]">
         <NavLink to="/" className="group flex items-center gap-3 text-foreground">
           <Logomark />
-          <span className="font-serif-headline text-[16px] leading-none tracking-[-0.01em] opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:delay-500">
+          <span className="font-serif-headline text-[16px] leading-none tracking-[-0.01em] opacity-0 translate-y-2 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 group-hover:delay-500 font-semibold">
             Shmøergh
           </span>
         </NavLink>

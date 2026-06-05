@@ -63,6 +63,10 @@ export function PostsPage({ filter }: PostsPageProps) {
     <Page>
       <Page.Header>
         <Page.Title>Posts</Page.Title>
+      </Page.Header>
+
+      <div className="flex items-center justify-between gap-3 py-4 border-b border-border">
+        <ViewTabs items={VIEWS} />
         <Page.Actions>
           <Button
             variant={filterOpen ? 'pressed' : 'ghost'}
@@ -76,10 +80,9 @@ export function PostsPage({ filter }: PostsPageProps) {
             New post
           </Button>
         </Page.Actions>
-      </Page.Header>
+      </div>
 
       <Page.Content>
-        <ViewTabs items={VIEWS} className="pt-6 pb-2" />
         {filterOpen && (
           <FilterBar
             chips={chips}

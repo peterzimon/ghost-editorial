@@ -83,7 +83,7 @@ export function Sidebar() {
         className="h-[52px] flex items-center gap-3 px-6 border-b border-border text-foreground"
       >
         <Logomark />
-        <span className="font-serif-headline text-[16px] leading-none tracking-[-0.01em]">
+        <span className="font-serif-headline text-[16px] font-medium leading-none tracking-[-0.01em]">
           Shmøergh
         </span>
       </NavLink>

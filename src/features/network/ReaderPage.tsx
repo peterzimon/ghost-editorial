@@ -17,7 +17,7 @@ export function ReaderPage() {
           <NetworkSubNavRight />
         </Page.Actions>
       </Page.Header>
-      <Page.Content className="gap-6 pt-6">
+      <Page.Content className="gap-6 pt-4">
         <ReaderCategoryPills active={category} onChange={setCategory} />
         <div className="grid grid-cols-3">
           <div className="col-span-2 flex flex-col border-r border-border pr-10">
