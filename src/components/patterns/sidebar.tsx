@@ -5,14 +5,22 @@ import {
   FileText,
   Globe,
   Image,
+  LogOut,
   MessageSquare,
   PenLine,
+  Settings,
   Tag,
   TrendingUp,
   User,
   Zap,
   type LucideIcon,
 } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { Logomark } from './logomark'
 import { StableLabel } from './stable-label'
 import { cn } from '@/lib/cn'
@@ -116,7 +124,7 @@ export function Sidebar() {
         </span>
       </NavLink>
 
-      <nav className="flex-1 min-h-0 overflow-y-auto px-8 pb-8 flex flex-col">
+      <nav className="flex-1 min-h-0 overflow-y-auto px-8 flex flex-col">
         {ENTRIES.map((entry, i) =>
           entry.kind === 'leaf' ? (
             <LeafItem key={`leaf-${i}`} leaf={entry} pathname={pathname} />
@@ -125,6 +133,36 @@ export function Sidebar() {
           ),
         )}
       </nav>
+
+      <div className="p-8">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              type="button"
+              aria-label="User menu"
+              className="size-8 flex items-center justify-center bg-[#e0e4ff] cursor-pointer rounded-[3px]"
+            >
+              <span className="font-mono text-[13px] font-medium uppercase tracking-[0.03em] text-[#4f4ca8]">
+                Z
+              </span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="top" align="start">
+            <DropdownMenuItem>
+              <User className="size-4" />
+              <span>Account</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Settings className="size-4" />
+              <span>Settings</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <LogOut className="size-4" />
+              <span>Sign out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     </aside>
   )
 }

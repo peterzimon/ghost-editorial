@@ -1,6 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
 import { Sidebar, SIDEBAR_WIDTH_PX } from '@/components/patterns/sidebar'
-import { TopBar } from '@/components/patterns/top-bar'
 import { cn } from '@/lib/cn'
 
 export function Layout() {
@@ -13,10 +12,9 @@ export function Layout() {
       <main
         className={cn(
           'w-full',
-          fullBleed ? 'h-full' : 'min-h-full lg:max-w-[1280px] mx-auto px-10',
+          fullBleed ? 'h-full' : 'min-h-full lg:max-w-[1280px] mx-auto px-10 pt-10',
         )}
       >
-        {!fullBleed && <TopBar />}
         <Outlet />
       </main>
     </div>
