@@ -7,6 +7,13 @@ import { MemberList } from './MemberList'
 
 export type MembersFilter = 'all' | 'vip' | 'friends' | 'early-birds'
 
+const TITLES: Record<MembersFilter, string> = {
+  all: 'Members',
+  vip: 'VIP',
+  friends: 'Friends & Family',
+  'early-birds': 'Early birds',
+}
+
 const MEMBER_FILTER_POOL: FilterChip[] = [
   { id: 'status', field: 'Member status', value: 'Complimentary' },
   { id: 'location', field: 'Location', value: 'London' },
@@ -76,7 +83,7 @@ export function MembersPage({ filter }: MembersPageProps) {
           </>
         ) : (
           <>
-            <Page.Title>Members</Page.Title>
+            <Page.Title>{TITLES[filter]}</Page.Title>
             <Page.Actions>
               <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
                 <Search className="size-4" />

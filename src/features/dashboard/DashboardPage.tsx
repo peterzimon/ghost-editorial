@@ -34,7 +34,7 @@ export function DashboardPage({ view }: DashboardPageProps) {
         </div>
       </Page.Header>
 
-      <div className="flex items-center justify-between gap-3 py-4 border-b border-border">
+      <div className="flex items-center justify-between gap-3 py-4">
         <ViewTabs items={VIEWS} />
         <Page.Actions>
           <Button variant="ghost" size="icon" aria-label="Customize dashboard">
@@ -51,7 +51,7 @@ export function DashboardPage({ view }: DashboardPageProps) {
       <Page.Content>
         {view === 'overview' ? (
           <>
-            <section className="grid grid-cols-3 gap-8 pt-2">
+            <section className="grid grid-cols-3 gap-8 pt-6">
               {STATS.map((stat) => (
                 <StatCard key={stat.label} stat={stat} />
               ))}

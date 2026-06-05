@@ -8,6 +8,13 @@ import { PostRow } from './PostRow'
 
 type PostsFilter = 'all' | PostStatus
 
+const TITLES: Record<PostsFilter, string> = {
+  all: 'Posts',
+  draft: 'Drafts',
+  scheduled: 'Scheduled',
+  published: 'Published',
+}
+
 const STATUS_LABEL: Record<PostStatus, string> = {
   draft: 'Draft',
   scheduled: 'Scheduled',
@@ -54,7 +61,7 @@ export function PostsPage({ filter }: PostsPageProps) {
   return (
     <Page>
       <Page.Header>
-        <Page.Title>Posts</Page.Title>
+        <Page.Title>{TITLES[filter]}</Page.Title>
         <Page.Actions>
           <Button
             variant={filterOpen ? 'pressed' : 'ghost'}
