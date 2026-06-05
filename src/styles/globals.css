@@ -80,7 +80,7 @@ body {
   font-weight: 400;
   font-size: 44px;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.022em;
   font-variation-settings: 'opsz' 32, 'wght' 500;
 }
 
@@ -97,9 +97,9 @@ body {
   font-family: var(--font-sans);
   font-style: italic;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.4;
-  letter-spacing: -0.015em;
+  font-variation-settings: 'opsz' 28;
 }
 
 @utility t-button {

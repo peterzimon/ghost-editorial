@@ -8,18 +8,15 @@ export function Layout() {
   const fullBleed = pathname === '/site'
 
   return (
-    <div
-      className="h-full bg-background"
-      style={{ paddingLeft: SIDEBAR_WIDTH_PX, paddingTop: 52 }}
-    >
+    <div className="h-full bg-background" style={{ paddingLeft: SIDEBAR_WIDTH_PX }}>
       <Sidebar />
-      <TopBar />
       <main
         className={cn(
           'min-h-full w-full',
-          fullBleed ? '' : 'lg:max-w-[1280px] mx-auto px-10 pt-[60px]',
+          fullBleed ? '' : 'lg:max-w-[1280px] mx-auto px-10',
         )}
       >
+        {!fullBleed && <TopBar />}
         <Outlet />
       </main>
     </div>

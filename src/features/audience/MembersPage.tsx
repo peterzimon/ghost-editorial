@@ -3,17 +3,9 @@ import { ListFilter, MoreHorizontal, Plus, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
-import { ViewTabs, type ViewTabItem } from '@/components/patterns/view-tabs'
 import { MemberList } from './MemberList'
 
 export type MembersFilter = 'all' | 'vip' | 'friends' | 'early-birds'
-
-const VIEWS: ViewTabItem[] = [
-  { label: 'All members', to: '/audience/members', end: true },
-  { label: 'VIP', to: '/audience/members/vip' },
-  { label: 'Friends & Family', to: '/audience/members/friends' },
-  { label: 'Early birds', to: '/audience/members/early-birds' },
-]
 
 const MEMBER_FILTER_POOL: FilterChip[] = [
   { id: 'status', field: 'Member status', value: 'Complimentary' },
@@ -83,34 +75,30 @@ export function MembersPage({ filter }: MembersPageProps) {
             </button>
           </>
         ) : (
-          <Page.Title>Members</Page.Title>
+          <>
+            <Page.Title>Members</Page.Title>
+            <Page.Actions>
+              <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
+                <Search className="size-4" />
+              </Button>
+              <Button variant="ghost" size="icon" aria-label="More actions">
+                <MoreHorizontal className="size-4" />
+              </Button>
+              <Button
+                variant={filterOpen ? 'pressed' : 'ghost'}
+                onClick={() => setFilterOpen((v) => !v)}
+              >
+                <ListFilter className="size-4" />
+                Filter
+              </Button>
+              <Button variant="primary">
+                <Plus className="size-4" />
+                New member
+              </Button>
+            </Page.Actions>
+          </>
         )}
       </Page.Header>
-
-      {!searchOpen && (
-        <div className="flex items-center justify-between gap-3 py-4 border-b border-border">
-          <ViewTabs items={VIEWS} />
-          <Page.Actions>
-            <Button variant="ghost" size="icon" aria-label="Search" onClick={openSearch}>
-              <Search className="size-4" />
-            </Button>
-            <Button variant="ghost" size="icon" aria-label="More actions">
-              <MoreHorizontal className="size-4" />
-            </Button>
-            <Button
-              variant={filterOpen ? 'pressed' : 'ghost'}
-              onClick={() => setFilterOpen((v) => !v)}
-            >
-              <ListFilter className="size-4" />
-              Filter
-            </Button>
-            <Button variant="primary">
-              <Plus className="size-4" />
-              New member
-            </Button>
-          </Page.Actions>
-        </div>
-      )}
 
       <Page.Content>
         {filterOpen && (

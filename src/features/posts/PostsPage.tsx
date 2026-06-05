@@ -3,18 +3,10 @@ import { ListFilter, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
-import { ViewTabs, type ViewTabItem } from '@/components/patterns/view-tabs'
 import { mockPosts, type PostStatus } from './mockPosts'
 import { PostRow } from './PostRow'
 
 type PostsFilter = 'all' | PostStatus
-
-const VIEWS: ViewTabItem[] = [
-  { label: 'All posts', to: '/content/posts', end: true },
-  { label: 'Drafts', to: '/content/posts/drafts' },
-  { label: 'Scheduled', to: '/content/posts/scheduled' },
-  { label: 'Published', to: '/content/posts/published' },
-]
 
 const STATUS_LABEL: Record<PostStatus, string> = {
   draft: 'Draft',
@@ -63,10 +55,6 @@ export function PostsPage({ filter }: PostsPageProps) {
     <Page>
       <Page.Header>
         <Page.Title>Posts</Page.Title>
-      </Page.Header>
-
-      <div className="flex items-center justify-between gap-3 py-4 border-b border-border">
-        <ViewTabs items={VIEWS} />
         <Page.Actions>
           <Button
             variant={filterOpen ? 'pressed' : 'ghost'}
@@ -80,7 +68,7 @@ export function PostsPage({ filter }: PostsPageProps) {
             New post
           </Button>
         </Page.Actions>
-      </div>
+      </Page.Header>
 
       <Page.Content>
         {filterOpen && (
