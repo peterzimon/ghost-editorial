@@ -85,6 +85,11 @@ export function FloatingChrome() {
   const openRadius = compact ? 16 : 20
   const logoPxClass = compact ? 'px-5' : 'px-6'
   const avatarSizeClass = compact ? 'size-7' : 'size-8'
+  const avatarSize = compact ? 28 : 32
+  // Symmetric row padding such that the avatar lands at the pill's exact
+  // horizontal center when closed. The pill has a 1px border on each side,
+  // so the row's content area is (pillW - 2), not pillW.
+  const avatarRowPadX = (avatarPillW - 2 - avatarSize) / 2
 
   // Measure the logo's natural width so the closed capsule hugs it exactly
   // (and the width can animate to the open panel width). +2 for the 1px border
@@ -202,8 +207,8 @@ export function FloatingChrome() {
             travels leftward with the growing capsule; the name block to its
             right fades in once the capsule is open. */}
         <div
-          style={{ height: pillRowH }}
-          className="flex items-center gap-3 px-[10px]"
+          style={{ height: pillRowH, paddingLeft: avatarRowPadX, paddingRight: avatarRowPadX }}
+          className="flex items-center gap-3"
         >
           <div
             className={cn(
