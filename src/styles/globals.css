@@ -89,6 +89,14 @@ body {
   font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
 }
 
+@media (max-width: 1379px) {
+  .t-h1 {
+    font-size: 34px;
+    letter-spacing: -0.03em;
+    font-variation-settings: 'opsz' 28, 'wght' 500;
+  }
+}
+
 @utility t-post-title {
   font-family: var(--font-sans);
   font-weight: 500;

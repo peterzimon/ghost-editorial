@@ -16,6 +16,7 @@ const SPRING = 'cubic-bezier(0.16, 1, 0.3, 1)'
 // 54 (not 52) so the closed pill's width matches its auto height — the 52px
 // avatar row plus the 1px border top/bottom — making it a perfect circle.
 const AVATAR_PILL_PX = 54
+const AVATAR_PILL_PX_COMPACT = 46
 const USER_MENU_WIDTH_PX = 232
 
 /** Shared glass treatment for both capsules. */
@@ -67,14 +68,33 @@ export function FloatingChrome() {
   const site = useHoverIntent()
   const userMenu = useHoverIntent()
 
+  // Compact mode below 1380px — shrinks the pills + matches the smaller
+  // page title. Tracked in JS so closedWidth / avatar width stay in sync.
+  const [compact, setCompact] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1379px)')
+    setCompact(mq.matches)
+    const onChange = (e: MediaQueryListEvent) => setCompact(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+
+  const pillRowH = compact ? 44 : 52
+  const avatarPillW = compact ? AVATAR_PILL_PX_COMPACT : AVATAR_PILL_PX
+  const closedRadius = compact ? 23 : 27
+  const openRadius = compact ? 16 : 20
+  const logoPxClass = compact ? 'px-5' : 'px-6'
+  const avatarSizeClass = compact ? 'size-7' : 'size-8'
+
   // Measure the logo's natural width so the closed capsule hugs it exactly
   // (and the width can animate to the open panel width). +2 for the 1px border
-  // on each side so the closed pill doesn't clip the wordmark.
+  // on each side so the closed pill doesn't clip the wordmark. Re-measures
+  // when compact mode flips (logo row height/padding changes).
   const logoRef = useRef<HTMLDivElement>(null)
   const [closedWidth, setClosedWidth] = useState<number>()
   useLayoutEffect(() => {
     if (logoRef.current) setClosedWidth(logoRef.current.offsetWidth + 2)
-  }, [])
+  }, [compact])
 
   // When the route changes, a layout shift inside the panel (sub-items
   // expanding/collapsing) can fire a synthetic mouseleave even though the
@@ -114,23 +134,24 @@ export function FloatingChrome() {
         onMouseLeave={site.onLeave}
         style={{
           width: site.open ? SITE_MENU_WIDTH_PX : closedWidth,
+          borderRadius: site.open ? openRadius : closedRadius,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
           // Bump in both directions — the slight dip on close reads fine here.
           transitionTimingFunction: BUMP,
         }}
-        className={cn(
-          'fixed top-4 left-4 z-40 overflow-hidden',
-          GLASS,
-          site.open ? 'rounded-[20px]' : 'rounded-[26px]',
-        )}
+        className={cn('fixed top-4 left-4 z-40 overflow-hidden', GLASS)}
       >
         {/* Logo — fixed height + content width so the capsule's width animation
             never stretches or compresses it. px-6 puts the Logomark at
             x = 16 + 24 = 40, matching the nav items below. */}
         <div
           ref={logoRef}
-          className="relative h-[52px] w-max flex items-center gap-2 px-6 text-foreground"
+          style={{ height: pillRowH }}
+          className={cn(
+            'relative w-max flex items-center gap-2 text-foreground',
+            logoPxClass,
+          )}
         >
           <Logomark className="shrink-0" />
           <span className="shrink-0 whitespace-nowrap font-serif-headline text-[18px] font-[500] leading-none tracking-[-0.01em]">
@@ -167,24 +188,29 @@ export function FloatingChrome() {
         onMouseEnter={userMenu.onEnter}
         onMouseLeave={userMenu.onLeave}
         style={{
-          width: userMenu.open ? USER_MENU_WIDTH_PX : AVATAR_PILL_PX,
+          width: userMenu.open ? USER_MENU_WIDTH_PX : avatarPillW,
+          borderRadius: userMenu.open ? openRadius : closedRadius,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
           // Overshoot only while opening; close on the smooth curve so the
           // width never dips below the avatar circle (which would clip it).
           transitionTimingFunction: userMenu.open ? BUMP : SPRING,
         }}
-        className={cn(
-          'fixed top-4 right-4 z-40 overflow-hidden',
-          GLASS,
-          userMenu.open ? 'rounded-[20px]' : 'rounded-[27px]',
-        )}
+        className={cn('fixed top-4 right-4 z-40 overflow-hidden', GLASS)}
       >
         {/* Avatar row — fixed 52px circle band. Avatar sits on the left and
             travels leftward with the growing capsule; the name block to its
             right fades in once the capsule is open. */}
-        <div className="h-[52px] flex items-center gap-3 px-[10px]">
-          <div className="size-8 shrink-0 flex items-center justify-center bg-[#e0e4ff] rounded-full">
+        <div
+          style={{ height: pillRowH }}
+          className="flex items-center gap-3 px-[10px]"
+        >
+          <div
+            className={cn(
+              'shrink-0 flex items-center justify-center bg-[#e0e4ff] rounded-full',
+              avatarSizeClass,
+            )}
+          >
             <span className="font-mono text-[12px] font-medium uppercase tracking-[0.03em] text-[#4f4ca8]">
               Z
             </span>
