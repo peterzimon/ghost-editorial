@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { LogOut, Settings, User } from 'lucide-react'
 import {
@@ -12,17 +12,34 @@ import { SearchPalette } from './search-palette'
 import { SITE_MENU_WIDTH_PX, SiteMenu } from './site-menu'
 import { cn } from '@/lib/cn'
 
+// Capsule morph — gentle overshoot so it grows a touch past size then settles
+// back (the "bump"). Smooth, not snappy.
+const BUMP = 'cubic-bezier(0.34, 1.45, 0.5, 1)'
+// Nav unfurl — buttery decelerating ease, no overshoot (overshooting the
+// grid-rows height would briefly over-expand the content area).
+const SPRING = 'cubic-bezier(0.16, 1, 0.3, 1)'
+
 /**
- * Floating chrome layer: a logo+wordmark anchor top-left that reveals the
- * site menu on hover, an invisible full-height hot zone along the left edge
- * that also triggers the menu, and an avatar dropdown top-right. Hosts the
- * global Cmd+K search palette listener.
+ * Floating chrome layer. The logo lives inside a frosted "liquid glass"
+ * capsule top-left; on hover the capsule morphs (grows + the nav unfurls)
+ * into the full site menu. A slim hot zone along the left edge also opens it.
+ * Avatar dropdown top-right. Hosts the global Cmd+K search palette listener.
  */
 export function FloatingChrome() {
   const [siteMenuOpen, setSiteMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const closeTimer = useRef<number | undefined>(undefined)
   const { pathname } = useLocation()
+
+  // Measure the logo's natural width so the closed capsule hugs it exactly
+  // (and the width can animate to the open panel width).
+  const logoRef = useRef<HTMLDivElement>(null)
+  const [closedWidth, setClosedWidth] = useState<number>()
+  useLayoutEffect(() => {
+    // +2 for the capsule's 1px border on each side so the closed pill doesn't
+    // clip the wordmark.
+    if (logoRef.current) setClosedWidth(logoRef.current.offsetWidth + 2)
+  }, [])
 
   // When the route changes, a layout shift inside the panel (sub-items
   // expanding/collapsing) can fire a synthetic mouseleave even though the
@@ -72,9 +89,8 @@ export function FloatingChrome() {
 
   return (
     <>
-      {/* Hot zone — slim invisible strip along the left edge of the viewport,
-          so hovering anywhere on the left reveals the menu. Sits behind the
-          logo+panel wrapper. */}
+      {/* Hot zone — invisible strip along the left edge that scales with the
+          page gutter, so hovering the left side of the page reveals the menu. */}
       <div
         className="fixed top-0 left-0 bottom-0 z-30"
         style={{ width: 'clamp(40px, calc((100vw - 1280px) / 2 + 40px), 160px)' }}
@@ -82,39 +98,56 @@ export function FloatingChrome() {
         onMouseLeave={scheduleClose}
       />
 
-      {/* Top-left: hover-driven site menu. The wrapper itself has
-          pointer-events-none so only the visible children (logo always, panel
-          when open) capture hover — empty interior space falls through to the
-          page below. */}
-      <div className="fixed top-4 left-4 z-40 pointer-events-none">
-        {/* Logo — always visible, sits on top of the panel. px-6 puts the
-            Logomark at viewport x = 16 + 24 = 40, matching the nav items
-            (panel px-3 + item px-3 = 24 + 16 = 40). */}
+      {/* Top-left: the liquid-glass capsule. Always visible as an affordance
+          around the logo; morphs into the full menu on hover. */}
+      <div
+        onMouseEnter={open}
+        onMouseLeave={scheduleClose}
+        style={{
+          width: siteMenuOpen ? SITE_MENU_WIDTH_PX : closedWidth,
+          transitionProperty: 'width, border-radius',
+          transitionDuration: '520ms',
+          transitionTimingFunction: BUMP,
+        }}
+        className={cn(
+          'fixed top-4 left-4 z-40 overflow-hidden',
+          'bg-white/55 backdrop-blur-xl backdrop-saturate-150 border border-white/50',
+          'shadow-[0_0_0.5px_rgba(0,0,0,0.35),0_40px_60px_-15px_rgba(0,0,0,0.18),0_12px_24px_-8px_rgba(0,0,0,0.1),0_3px_8px_rgba(0,0,0,0.04)]',
+          siteMenuOpen ? 'rounded-[20px]' : 'rounded-[26px]',
+        )}
+      >
+        {/* Logo — fixed height + content width so the capsule's width animation
+            never stretches or compresses it. px-6 puts the Logomark at
+            x = 16 + 24 = 40, matching the nav items below. */}
         <div
-          onMouseEnter={open}
-          onMouseLeave={scheduleClose}
-          className="pointer-events-auto relative z-10 h-[52px] flex items-center gap-2 px-6 text-foreground"
+          ref={logoRef}
+          className="relative h-[52px] w-max flex items-center gap-2 px-6 text-foreground"
         >
-          <Logomark />
-          <span className="font-serif-headline text-[18px] font-[500] leading-none tracking-[-0.01em]">
+          <Logomark className="shrink-0" />
+          <span className="shrink-0 whitespace-nowrap font-serif-headline text-[18px] font-[500] leading-none tracking-[-0.01em]">
             Shmøergh
           </span>
         </div>
 
-        {/* Panel — fades + slides on hover. Pointer events are toggled with
-            opacity so the closed panel doesn't intercept hover on empty space. */}
+        {/* Nav — unfurls via a grid-rows 0fr→1fr transition so it animates
+            smoothly regardless of how tall the menu is on the active route. */}
         <div
-          onMouseEnter={open}
-          onMouseLeave={scheduleClose}
-          style={{ width: SITE_MENU_WIDTH_PX }}
-          className={cn(
-            'relative z-0 -mt-[52px] rounded-[16px] bg-white/70 backdrop-blur-md px-3 pt-[80px] pb-4 shadow-[0_0_0.5px_rgba(0,0,0,0.35),0_100px_40px_rgba(0,0,0,0.07),0_42px_17px_rgba(0,0,0,0.05),0_22px_9px_rgba(0,0,0,0.04),0_13px_5px_rgba(0,0,0,0.04),0_7px_3px_rgba(0,0,0,0.03),0_3px_1px_rgba(0,0,0,0.02)] transition duration-200 ease-out',
-            siteMenuOpen
-              ? 'opacity-100 translate-x-0 pointer-events-auto'
-              : 'opacity-0 -translate-x-2 pointer-events-none',
-          )}
+          className="grid transition-[grid-template-rows] duration-[450ms]"
+          style={{
+            gridTemplateRows: siteMenuOpen ? '1fr' : '0fr',
+            transitionTimingFunction: SPRING,
+          }}
         >
-          <SiteMenu />
+          <div className="overflow-hidden">
+            <div
+              className={cn(
+                'px-3 pt-2 pb-4 transition-opacity duration-200',
+                siteMenuOpen ? 'opacity-100 delay-75' : 'opacity-0',
+              )}
+            >
+              <SiteMenu />
+            </div>
+          </div>
         </div>
       </div>
 
