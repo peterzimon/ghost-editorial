@@ -176,8 +176,18 @@ export function FloatingChrome() {
         )}
       >
         {/* Avatar row — fixed 52px circle band; the badge stays pinned to the
-            right so it doesn't move as the capsule grows leftward. */}
-        <div className="h-[52px] flex items-center justify-end px-[10px]">
+            right so it doesn't move as the capsule grows leftward. The name
+            block sits to its left and fades in once the capsule is open. */}
+        <div className="h-[52px] flex items-center justify-end gap-3 px-[10px]">
+          <div
+            className={cn(
+              'flex flex-col items-end text-right whitespace-nowrap transition-opacity duration-200',
+              userMenu.open ? 'opacity-100 delay-75' : 'opacity-0',
+            )}
+          >
+            <span className="text-[13px] font-medium leading-tight text-foreground">Zoë Bauer</span>
+            <span className="t-info text-muted">zoe@shmoergh.com</span>
+          </div>
           <div className="size-8 shrink-0 flex items-center justify-center bg-[#e0e4ff] rounded-full">
             <span className="font-mono text-[12px] font-medium uppercase tracking-[0.03em] text-[#4f4ca8]">
               Z
