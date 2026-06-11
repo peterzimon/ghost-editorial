@@ -1,12 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { LogOut, Settings, User } from 'lucide-react'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Logomark } from './logomark'
 import { SearchPalette } from './search-palette'
 import { SITE_MENU_WIDTH_PX, SiteMenu } from './site-menu'
@@ -15,29 +9,68 @@ import { cn } from '@/lib/cn'
 // Capsule morph — gentle overshoot so it grows a touch past size then settles
 // back (the "bump"). Smooth, not snappy.
 const BUMP = 'cubic-bezier(0.34, 1.45, 0.5, 1)'
-// Nav unfurl — buttery decelerating ease, no overshoot (overshooting the
+// Content unfurl — buttery decelerating ease, no overshoot (overshooting the
 // grid-rows height would briefly over-expand the content area).
 const SPRING = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
+const AVATAR_PILL_PX = 52
+const USER_MENU_WIDTH_PX = 232
+
+/** Shared glass treatment for both capsules. */
+const GLASS =
+  'bg-white/55 backdrop-blur-xl backdrop-saturate-150 border border-white/50 ' +
+  'shadow-[0_0_0.5px_rgba(0,0,0,0.35),0_40px_60px_-15px_rgba(0,0,0,0.18),0_12px_24px_-8px_rgba(0,0,0,0.1),0_3px_8px_rgba(0,0,0,0.04)]'
+
 /**
- * Floating chrome layer. The logo lives inside a frosted "liquid glass"
- * capsule top-left; on hover the capsule morphs (grows + the nav unfurls)
- * into the full site menu. A slim hot zone along the left edge also opens it.
- * Avatar dropdown top-right. Hosts the global Cmd+K search palette listener.
+ * Hover-intent open/close with a small close delay so the cursor can travel
+ * from the trigger into the panel without the panel flickering shut.
+ */
+function useHoverIntent() {
+  const [open, setOpen] = useState(false)
+  const timer = useRef<number | undefined>(undefined)
+
+  const cancel = () => {
+    if (timer.current) {
+      window.clearTimeout(timer.current)
+      timer.current = undefined
+    }
+  }
+  const onEnter = () => {
+    cancel()
+    setOpen(true)
+  }
+  const onLeave = () => {
+    cancel()
+    timer.current = window.setTimeout(() => {
+      setOpen(false)
+      timer.current = undefined
+    }, 120)
+  }
+
+  useEffect(() => cancel, [])
+
+  return { open, onEnter, onLeave, cancel }
+}
+
+/**
+ * Floating chrome layer. Two frosted "liquid glass" capsules: the logo
+ * top-left morphs into the site menu on hover (a left-edge hot zone also
+ * opens it); the avatar top-right morphs into the user menu on hover. Hosts
+ * the global Cmd+K search palette listener.
  */
 export function FloatingChrome() {
-  const [siteMenuOpen, setSiteMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const closeTimer = useRef<number | undefined>(undefined)
   const { pathname } = useLocation()
 
+  const site = useHoverIntent()
+  const userMenu = useHoverIntent()
+
   // Measure the logo's natural width so the closed capsule hugs it exactly
-  // (and the width can animate to the open panel width).
+  // (and the width can animate to the open panel width). +2 for the 1px border
+  // on each side so the closed pill doesn't clip the wordmark.
   const logoRef = useRef<HTMLDivElement>(null)
   const [closedWidth, setClosedWidth] = useState<number>()
   useLayoutEffect(() => {
-    // +2 for the capsule's 1px border on each side so the closed pill doesn't
-    // clip the wordmark.
     if (logoRef.current) setClosedWidth(logoRef.current.offsetWidth + 2)
   }, [])
 
@@ -46,11 +79,8 @@ export function FloatingChrome() {
   // cursor never really left. Cancel any pending close so the panel doesn't
   // flicker shut and reopen via the hot zone.
   useEffect(() => {
-    if (closeTimer.current) {
-      window.clearTimeout(closeTimer.current)
-      closeTimer.current = undefined
-    }
-  }, [pathname])
+    site.cancel()
+  }, [pathname]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Cmd+K toggles the search palette
   useEffect(() => {
@@ -64,29 +94,6 @@ export function FloatingChrome() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  // Cleanup pending timer on unmount
-  useEffect(
-    () => () => {
-      if (closeTimer.current) window.clearTimeout(closeTimer.current)
-    },
-    [],
-  )
-
-  const open = () => {
-    if (closeTimer.current) {
-      window.clearTimeout(closeTimer.current)
-      closeTimer.current = undefined
-    }
-    setSiteMenuOpen(true)
-  }
-  const scheduleClose = () => {
-    if (closeTimer.current) window.clearTimeout(closeTimer.current)
-    closeTimer.current = window.setTimeout(() => {
-      setSiteMenuOpen(false)
-      closeTimer.current = undefined
-    }, 120)
-  }
-
   return (
     <>
       {/* Hot zone — invisible strip along the left edge that scales with the
@@ -94,26 +101,25 @@ export function FloatingChrome() {
       <div
         className="fixed top-0 left-0 bottom-0 z-30"
         style={{ width: 'clamp(40px, calc((100vw - 1280px) / 2 + 40px), 160px)' }}
-        onMouseEnter={open}
-        onMouseLeave={scheduleClose}
+        onMouseEnter={site.onEnter}
+        onMouseLeave={site.onLeave}
       />
 
-      {/* Top-left: the liquid-glass capsule. Always visible as an affordance
-          around the logo; morphs into the full menu on hover. */}
+      {/* Top-left: the liquid-glass site-menu capsule. Always visible as an
+          affordance around the logo; morphs into the full menu on hover. */}
       <div
-        onMouseEnter={open}
-        onMouseLeave={scheduleClose}
+        onMouseEnter={site.onEnter}
+        onMouseLeave={site.onLeave}
         style={{
-          width: siteMenuOpen ? SITE_MENU_WIDTH_PX : closedWidth,
+          width: site.open ? SITE_MENU_WIDTH_PX : closedWidth,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
           transitionTimingFunction: BUMP,
         }}
         className={cn(
           'fixed top-4 left-4 z-40 overflow-hidden',
-          'bg-white/55 backdrop-blur-xl backdrop-saturate-150 border border-white/50',
-          'shadow-[0_0_0.5px_rgba(0,0,0,0.35),0_40px_60px_-15px_rgba(0,0,0,0.18),0_12px_24px_-8px_rgba(0,0,0,0.1),0_3px_8px_rgba(0,0,0,0.04)]',
-          siteMenuOpen ? 'rounded-[20px]' : 'rounded-[26px]',
+          GLASS,
+          site.open ? 'rounded-[20px]' : 'rounded-[26px]',
         )}
       >
         {/* Logo — fixed height + content width so the capsule's width animation
@@ -134,7 +140,7 @@ export function FloatingChrome() {
         <div
           className="grid transition-[grid-template-rows] duration-[450ms]"
           style={{
-            gridTemplateRows: siteMenuOpen ? '1fr' : '0fr',
+            gridTemplateRows: site.open ? '1fr' : '0fr',
             transitionTimingFunction: SPRING,
           }}
         >
@@ -142,7 +148,7 @@ export function FloatingChrome() {
             <div
               className={cn(
                 'px-3 pt-2 pb-4 transition-opacity duration-200',
-                siteMenuOpen ? 'opacity-100 delay-75' : 'opacity-0',
+                site.open ? 'opacity-100 delay-75' : 'opacity-0',
               )}
             >
               <SiteMenu />
@@ -151,39 +157,76 @@ export function FloatingChrome() {
         </div>
       </div>
 
-      {/* Top-right: avatar / user menu. right-10 (40px) mirrors the logomark's
-          40px left inset so the top corners feel balanced. */}
-      <div className="fixed top-4 right-10 z-40">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              type="button"
-              aria-label="User menu"
-              className="size-8 flex items-center justify-center bg-[#e0e4ff] cursor-pointer rounded-full"
+      {/* Top-right: the liquid-glass user-menu capsule. Closed it's a circle
+          hugging the avatar; on hover it morphs into the user menu, growing
+          leftward from the fixed right edge. */}
+      <div
+        onMouseEnter={userMenu.onEnter}
+        onMouseLeave={userMenu.onLeave}
+        style={{
+          width: userMenu.open ? USER_MENU_WIDTH_PX : AVATAR_PILL_PX,
+          transitionProperty: 'width, border-radius',
+          transitionDuration: '520ms',
+          transitionTimingFunction: BUMP,
+        }}
+        className={cn(
+          'fixed top-4 right-4 z-40 overflow-hidden',
+          GLASS,
+          userMenu.open ? 'rounded-[20px]' : 'rounded-[26px]',
+        )}
+      >
+        {/* Avatar row — fixed 52px circle band; the badge stays pinned to the
+            right so it doesn't move as the capsule grows leftward. */}
+        <div className="h-[52px] flex items-center justify-end px-[10px]">
+          <div className="size-8 shrink-0 flex items-center justify-center bg-[#e0e4ff] rounded-full">
+            <span className="font-mono text-[12px] font-medium uppercase tracking-[0.03em] text-[#4f4ca8]">
+              Z
+            </span>
+          </div>
+        </div>
+
+        {/* Menu — unfurls below the avatar on hover. */}
+        <div
+          className="grid transition-[grid-template-rows] duration-[450ms]"
+          style={{
+            gridTemplateRows: userMenu.open ? '1fr' : '0fr',
+            transitionTimingFunction: SPRING,
+          }}
+        >
+          <div className="overflow-hidden">
+            <div
+              className={cn(
+                'px-3 pt-1 pb-3 transition-opacity duration-200',
+                userMenu.open ? 'opacity-100 delay-75' : 'opacity-0',
+              )}
             >
-              <span className="font-mono text-[12px] font-medium uppercase tracking-[0.03em] text-[#4f4ca8]">
-                Z
-              </span>
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent side="bottom" align="end">
-            <DropdownMenuItem>
-              <User className="size-4" />
-              <span>Account</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="size-4" />
-              <span>Settings</span>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <LogOut className="size-4" />
-              <span>Sign out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <UserMenuItem icon={User} label="Account" />
+              <UserMenuItem icon={Settings} label="Settings" />
+              <UserMenuItem icon={LogOut} label="Sign out" />
+            </div>
+          </div>
+        </div>
       </div>
 
       <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
+  )
+}
+
+function UserMenuItem({
+  icon: Icon,
+  label,
+}: {
+  icon: typeof User
+  label: string
+}) {
+  return (
+    <button
+      type="button"
+      className="w-full flex items-center gap-3 h-9 px-3 rounded-[4px] transition-colors hover:bg-row-hover cursor-pointer text-left"
+    >
+      <Icon className="size-4 shrink-0 text-muted" strokeWidth={1.75} />
+      <span className="text-[13px] font-medium text-foreground whitespace-nowrap">{label}</span>
+    </button>
   )
 }
