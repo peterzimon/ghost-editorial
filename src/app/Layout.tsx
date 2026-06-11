@@ -12,7 +12,9 @@ export function Layout() {
       <main
         className={cn(
           'w-full',
-          fullBleed ? 'h-full' : 'relative min-h-full lg:max-w-[1280px] mx-auto px-10 pt-[4vw]',
+          fullBleed
+            ? 'h-full'
+            : 'relative min-h-full lg:max-w-[1280px] mx-auto px-10 pt-[max(80px,4vw)]',
         )}
       >
         <Outlet />
