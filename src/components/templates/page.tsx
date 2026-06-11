@@ -12,7 +12,12 @@ function Page({ children, className }: SlotProps) {
 
 function PageHeader({ children, className }: SlotProps) {
   return (
-    <div className={cn('flex items-baseline gap-5 pb-8 border-b border-border', className)}>
+    <div
+      className={cn(
+        'flex items-baseline gap-5 pb-8 max-[1379px]:pb-5 border-b border-border',
+        className,
+      )}
+    >
       {children}
     </div>
   )
