@@ -13,7 +13,9 @@ const BUMP = 'cubic-bezier(0.34, 1.45, 0.5, 1)'
 // grid-rows height would briefly over-expand the content area).
 const SPRING = 'cubic-bezier(0.16, 1, 0.3, 1)'
 
-const AVATAR_PILL_PX = 52
+// 54 (not 52) so the closed pill's width matches its auto height — the 52px
+// avatar row plus the 1px border top/bottom — making it a perfect circle.
+const AVATAR_PILL_PX = 54
 const USER_MENU_WIDTH_PX = 232
 
 /** Shared glass treatment for both capsules. */
@@ -175,7 +177,7 @@ export function FloatingChrome() {
         className={cn(
           'fixed top-4 right-4 z-40 overflow-hidden',
           GLASS,
-          userMenu.open ? 'rounded-[20px]' : 'rounded-[26px]',
+          userMenu.open ? 'rounded-[20px]' : 'rounded-[27px]',
         )}
       >
         {/* Avatar row — fixed 52px circle band. Avatar sits on the left and
