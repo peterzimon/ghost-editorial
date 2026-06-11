@@ -14,7 +14,7 @@ export function Layout() {
           'w-full',
           fullBleed
             ? 'h-full'
-            : 'relative min-h-full lg:max-w-[1280px] mx-auto px-10 pt-[max(100px,4vw)]',
+            : 'relative min-h-full lg:max-w-[1280px] max-[1379px]:max-w-[1080px] mx-auto px-10 pt-[max(100px,4vw)]',
         )}
       >
         <Outlet />
