@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
 import { SectionHeading } from '@/components/patterns/section-heading'
 import { Breadcrumb } from '@/components/patterns/breadcrumb'
-import { SIDEBAR_WIDTH_PX } from '@/components/patterns/sidebar'
 import { cn } from '@/lib/cn'
 import { mockMembers, type Member } from './mockMembers'
 import { MemberAvatar } from './MemberAvatar'
@@ -86,8 +85,8 @@ export function MemberDetailPage() {
           aria-hidden
           className="absolute -top-[148px] bottom-0 z-0 pointer-events-none overflow-hidden"
           style={{
-            left: `calc((${SIDEBAR_WIDTH_PX}px + 100% - 100vw) / 2)`,
-            right: `calc((${SIDEBAR_WIDTH_PX}px + 100% - 100vw) / 2)`,
+            left: `calc((100% - 100vw) / 2)`,
+            right: `calc((100% - 100vw) / 2)`,
           }}
         >
           <MemberDetailMap lat={coordsFor(member.location)[0]} lng={coordsFor(member.location)[1]} />

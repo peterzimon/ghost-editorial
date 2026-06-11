@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom'
-import { Sidebar, SIDEBAR_WIDTH_PX } from '@/components/patterns/sidebar'
+import { FloatingChrome } from '@/components/patterns/floating-chrome'
 import { cn } from '@/lib/cn'
 
 export function Layout() {
@@ -7,8 +7,8 @@ export function Layout() {
   const fullBleed = pathname === '/site'
 
   return (
-    <div className="h-full bg-background" style={{ paddingLeft: SIDEBAR_WIDTH_PX }}>
-      <Sidebar />
+    <div className="h-full bg-background">
+      <FloatingChrome />
       <main
         className={cn(
           'w-full',
