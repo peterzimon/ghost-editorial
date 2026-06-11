@@ -114,6 +114,7 @@ export function FloatingChrome() {
           width: site.open ? SITE_MENU_WIDTH_PX : closedWidth,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
+          // Bump in both directions — the slight dip on close reads fine here.
           transitionTimingFunction: BUMP,
         }}
         className={cn(
@@ -167,7 +168,9 @@ export function FloatingChrome() {
           width: userMenu.open ? USER_MENU_WIDTH_PX : AVATAR_PILL_PX,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
-          transitionTimingFunction: BUMP,
+          // Overshoot only while opening; close on the smooth curve so the
+          // width never dips below the avatar circle (which would clip it).
+          transitionTimingFunction: userMenu.open ? BUMP : SPRING,
         }}
         className={cn(
           'fixed top-4 right-4 z-40 overflow-hidden',
