@@ -28,6 +28,21 @@ body,
   height: 100%;
 }
 
+:root {
+  /* Allows height/width to transition to/from auto (e.g. the pinned sidebar
+     morph). Chrome/Edge support; a no-op elsewhere. */
+  interpolate-size: allow-keywords;
+}
+
+@keyframes clock-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
@@ -87,6 +102,14 @@ body {
   letter-spacing: -0.04em;
   font-variation-settings: 'opsz' 32, 'wght' 500;
   font-feature-settings: 'dlig', 'zero', 'ss01', 'ss02', 'cv10', 'cv06';
+}
+
+@media (max-width: 1379px) {
+  .t-h1 {
+    font-size: 34px;
+    letter-spacing: -0.03em;
+    font-variation-settings: 'opsz' 28, 'wght' 500;
+  }
 }
 
 @utility t-post-title {
