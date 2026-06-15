@@ -130,7 +130,7 @@ export function FloatingChrome({ pinned, onPinChange, framed = false }: Floating
   const pillRowH = compact ? 44 : 52
   const avatarPillW = compact ? AVATAR_PILL_PX_COMPACT : AVATAR_PILL_PX
   const closedRadius = compact ? 23 : 27
-  const openRadius = compact ? 16 : 20
+  const openRadius = 6
   const avatarSizeClass = compact ? 'size-7' : 'size-8'
   const avatarSize = compact ? 28 : 32
 
@@ -397,10 +397,10 @@ function UserMenuItem({
   return (
     <button
       type="button"
-      className="w-full flex items-center gap-3 h-9 px-3 rounded-[4px] transition-colors hover:bg-[rgba(160,160,160,0.15)] cursor-pointer text-left"
+      className="w-full flex items-center gap-3 h-8 px-3 rounded-[4px] transition-colors hover:bg-[rgba(160,160,160,0.08)] cursor-pointer text-left"
     >
       <Icon className="size-4 shrink-0 text-muted" strokeWidth={1.75} />
-      <span className="text-[13px] font-medium text-foreground whitespace-nowrap">{label}</span>
+      <span className="t-button font-medium text-foreground whitespace-nowrap">{label}</span>
     </button>
   )
 }

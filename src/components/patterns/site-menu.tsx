@@ -162,7 +162,7 @@ function LeafItem({
         className={({ isActive }) =>
           cn(
             'flex items-center gap-3 h-8 px-3 rounded-[4px] transition-colors',
-            isActive ? 'bg-[rgba(160,160,160,0.15)]' : 'hover:bg-[rgba(160,160,160,0.15)]',
+            isActive ? 'bg-[rgba(160,160,160,0.15)]' : 'hover:bg-[rgba(160,160,160,0.08)]',
           )
         }
       >
@@ -204,7 +204,7 @@ function SubItemRow({ item, onClick }: { item: SubItem; onClick?: () => void }) 
       className={({ isActive }) =>
         cn(
           'flex items-center gap-3 h-8 px-3 rounded-[4px] transition-colors',
-          isActive ? 'bg-[rgba(160,160,160,0.15)]' : 'hover:bg-[rgba(160,160,160,0.15)]',
+          isActive ? 'bg-[rgba(160,160,160,0.15)]' : 'hover:bg-[rgba(160,160,160,0.08)]',
         )
       }
     >
