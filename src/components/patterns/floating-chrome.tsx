@@ -34,10 +34,10 @@ const SHADOW_PINNED =
   '0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px -10px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03)'
 
 /**
- * Hover-intent open/close with a small close delay so the cursor can travel
- * from the trigger into the panel without the panel flickering shut.
+ * Hover-intent open/close with a configurable close delay so the cursor can
+ * travel from the trigger into the panel without the panel flickering shut.
  */
-function useHoverIntent() {
+function useHoverIntent(closeDelayMs = 120) {
   const [open, setOpen] = useState(false)
   const timer = useRef<number | undefined>(undefined)
 
@@ -56,7 +56,7 @@ function useHoverIntent() {
     timer.current = window.setTimeout(() => {
       setOpen(false)
       timer.current = undefined
-    }, 120)
+    }, closeDelayMs)
   }
 
   useEffect(() => cancel, [])
@@ -79,7 +79,9 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const { pathname } = useLocation()
 
-  const site = useHoverIntent()
+  // Site menu gets a longer close delay so it's forgiving when the cursor
+  // drifts off the panel; the smaller user menu keeps the snappy default.
+  const site = useHoverIntent(600)
   const userMenu = useHoverIntent()
 
   // When pinned, the site capsule is always "open" (height extends to the
@@ -151,30 +153,34 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
 
       {/* Top-left: the liquid-glass site-menu capsule. Always visible as an
           affordance around the logo; morphs into the full menu on hover, or
-          stays open + extends to the viewport bottom when pinned. */}
+          stays open + extends to the viewport bottom when pinned. Wrapped in
+          a flex container that holds the capsule plus an invisible hover
+          buffer to its right — so the cursor has a small threshold before
+          the panel starts closing. */}
       <div
         onMouseEnter={site.onEnter}
         onMouseLeave={site.onLeave}
-        style={{
-          width: siteOpen ? SITE_MENU_WIDTH_PX : closedWidth,
-          // `auto` (not undefined) so interpolate-size can transition it.
-          height: pinned ? 'calc(100vh - 32px)' : 'auto',
-          borderRadius: siteOpen ? openRadius : closedRadius,
-          boxShadow: pinned ? SHADOW_PINNED : SHADOW_FLOAT,
-          transitionProperty: 'width, height, border-radius, box-shadow',
-          transitionDuration: '520ms',
-          // Bump in both directions — the slight dip on close reads fine here.
-          transitionTimingFunction: BUMP,
-        }}
-        className={cn(
-          'fixed top-4 left-4 z-40 overflow-hidden flex flex-col',
-          GLASS,
-        )}
+        className="fixed top-4 left-4 z-40 flex items-stretch"
       >
+        <div
+          style={{
+            width: siteOpen ? SITE_MENU_WIDTH_PX : closedWidth,
+            // `auto` (not undefined) so interpolate-size can transition it.
+            height: pinned ? 'calc(100vh - 32px)' : 'auto',
+            borderRadius: siteOpen ? openRadius : closedRadius,
+            boxShadow: pinned ? SHADOW_PINNED : SHADOW_FLOAT,
+            transitionProperty: 'width, height, border-radius, box-shadow',
+            transitionDuration: '520ms',
+            // Bump in both directions — the slight dip on close reads fine here.
+            transitionTimingFunction: BUMP,
+          }}
+          className={cn(
+            'relative overflow-hidden flex flex-col shrink-0',
+            GLASS,
+          )}
+        >
         {/* Logo — fixed height + content width so the capsule's width animation
-            never stretches or compresses it. px-6 puts the Logomark at
-            x = 16 + 24 = 40, matching the nav items below. The pin button
-            appears at the end once the capsule is open. */}
+            never stretches or compresses it. */}
         <div
           ref={logoRef}
           style={{
@@ -182,41 +188,43 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
             paddingLeft: compact ? 20 : 24,
             paddingRight: compact ? 20 : 24,
           }}
-          className={cn(
-            'relative shrink-0 flex items-center gap-2 text-foreground',
-            siteOpen ? 'w-full' : 'w-max',
-          )}
+          className="shrink-0 w-max flex items-center gap-2 text-foreground"
         >
           <Logomark className="shrink-0" />
           <span className="shrink-0 whitespace-nowrap font-serif-headline text-[18px] font-[500] leading-none tracking-[-0.01em]">
             Shmøergh
           </span>
-          {/* Pin button — absolute so it doesn't take layout space (and so the
-              closed pill measurement hugs the wordmark, not the button). */}
-          <button
-            type="button"
-            onClick={() => onPinChange(!pinned)}
-            aria-label={pinned ? 'Unpin sidebar' : 'Pin sidebar'}
-            style={{ right: 8 }}
-            className={cn(
-              'absolute top-1/2 -translate-y-1/2 size-7 flex items-center justify-center rounded-full text-muted hover:bg-black/5 hover:text-foreground transition-[opacity,color,background-color] duration-200 cursor-pointer',
-              // Visibility tracks the raw hover state (not pinned) so the
-              // button hides when you move off the panel, even in pinned mode.
-              site.open
-                ? 'opacity-100 delay-75 pointer-events-auto'
-                : 'opacity-0 pointer-events-none',
-            )}
-          >
-            <Pin
-              className="size-4 transition-transform duration-300"
-              strokeWidth={1.75}
-              style={{
-                transform: pinned ? 'rotate(45deg)' : 'rotate(0deg)',
-                transitionTimingFunction: SPRING,
-              }}
-            />
-          </button>
         </div>
+
+        {/* Pin button — absolute, anchored to the capsule (not the logo row)
+            so it tracks the capsule's right edge smoothly while the width
+            animates, instead of snapping when the row's sizing flips. */}
+        <button
+          type="button"
+          onClick={() => onPinChange(!pinned)}
+          aria-label={pinned ? 'Unpin sidebar' : 'Pin sidebar'}
+          style={{
+            top: (pillRowH - 28) / 2,
+            right: 8,
+          }}
+          className={cn(
+            'absolute size-7 flex items-center justify-center rounded-full text-muted hover:bg-black/5 hover:text-foreground transition-[opacity,color,background-color] duration-200 cursor-pointer',
+            // Visibility tracks the raw hover state (not pinned) so the
+            // button hides when you move off the panel, even in pinned mode.
+            site.open
+              ? 'opacity-100 delay-75 pointer-events-auto'
+              : 'opacity-0 pointer-events-none',
+          )}
+        >
+          <Pin
+            className="size-4 transition-transform duration-300"
+            strokeWidth={1.75}
+            style={{
+              transform: pinned ? 'rotate(45deg)' : 'rotate(0deg)',
+              transitionTimingFunction: SPRING,
+            }}
+            />
+        </button>
 
         {/* Nav — unfurls via a grid-rows 0fr→1fr transition so it animates
             smoothly regardless of how tall the menu is on the active route.
@@ -247,6 +255,11 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
             </div>
           </div>
         </div>
+        </div>
+
+        {/* Hover buffer to the right — keeps the panel open while the cursor
+            travels off the capsule. Only active when meaningfully open. */}
+        {siteOpen && !pinned && <div aria-hidden className="w-12 shrink-0" />}
       </div>
 
       {/* Top-right: the liquid-glass user-menu capsule. Closed it's a circle
