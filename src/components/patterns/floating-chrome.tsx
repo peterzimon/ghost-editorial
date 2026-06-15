@@ -19,19 +19,38 @@ const AVATAR_PILL_PX = 54
 const AVATAR_PILL_PX_COMPACT = 46
 const USER_MENU_WIDTH_PX = 232
 
-/** Shared glass treatment (background + border) for both capsules. */
-const GLASS =
-  'bg-white/55 backdrop-blur-xl backdrop-saturate-150 border border-white/50'
+/** Shared glass treatment (backdrop + body fill) for both capsules. Very
+ *  low body opacity + moderate blur so the page behind genuinely shows
+ *  through. The edge ring + sheen come from SHADOW_* and GlassHighlight. */
+const GLASS = 'bg-white/25 backdrop-blur-md backdrop-saturate-150'
 
-/** Default floating shadow — used by the avatar capsule and the unpinned
- * site capsule. */
+/** Default floating shadow — subtle inset top highlight + hairline
+ *  outline + layered drop shadow stack. Six layers, matching the
+ *  pinned variant 1:1 so box-shadow transitions interpolate cleanly. */
 const SHADOW_FLOAT =
-  '0 0 0.5px rgba(0,0,0,0.35), 0 40px 60px -15px rgba(0,0,0,0.18), 0 12px 24px -8px rgba(0,0,0,0.1), 0 3px 8px rgba(0,0,0,0.04)'
+  'inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(255,255,255,0.12), 0 0 0 0.5px rgba(0,0,0,0.06), 0 40px 60px -15px rgba(0,0,0,0.18), 0 12px 24px -8px rgba(0,0,0,0.1), 0 3px 8px rgba(0,0,0,0.04)'
 
-/** Lighter shadow for the pinned sidebar — softer floating layers plus a
- * 1px no-blur outline so it still reads against light page backgrounds. */
+/** Softer shadow for the pinned sidebar — anchored, less floaty. Same
+ *  six-layer structure as SHADOW_FLOAT so they interpolate without
+ *  snapping (CSS can't interpolate mismatched shadow stacks). */
 const SHADOW_PINNED =
-  '0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px -10px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03)'
+  'inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(255,255,255,0), 0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px -10px rgba(0,0,0,0.06), 0 4px 12px -4px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.03)'
+
+/** Specular sheen overlay — gentle top-edge highlight that fades quickly
+ *  so the body stays translucent. Inherits border-radius. */
+function GlassHighlight() {
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        borderRadius: 'inherit',
+        background:
+          'linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 18%, rgba(255,255,255,0) 85%, rgba(255,255,255,0.06) 100%)',
+      }}
+    />
+  )
+}
 
 /**
  * Hover-intent open/close with a configurable close delay so the cursor can
@@ -205,6 +224,7 @@ export function FloatingChrome({ pinned, onPinChange, framed = false }: Floating
             GLASS,
           )}
         >
+        <GlassHighlight />
         {/* Logo — fixed height + content width so the capsule's width animation
             never stretches or compresses it. */}
         <div
@@ -308,6 +328,7 @@ export function FloatingChrome({ pinned, onPinChange, framed = false }: Floating
         }}
         className={cn('fixed z-40 overflow-hidden', GLASS)}
       >
+        <GlassHighlight />
         {/* Avatar row — fixed 52px circle band. Avatar sits on the left and
             travels leftward with the growing capsule; the name block to its
             right fades in once the capsule is open. */}
