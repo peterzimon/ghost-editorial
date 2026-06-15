@@ -60,7 +60,16 @@ export function Layout() {
   const cardPaddingLeft = pinned && showChrome ? PINNED_CARD_PAD_PX : 0
 
   return (
-    <div className="min-h-full bg-background relative">
+    <div
+      className="min-h-full bg-background relative"
+      style={
+        {
+          // Exposed for full-bleed content (e.g. the member-detail map
+          // backdrop) to compensate for the pinned-sidebar shift.
+          '--pinned-shift': `${cardPaddingLeft}px`,
+        } as React.CSSProperties
+      }
+    >
       {/* Frame mask — same fixed element in every mode. Its insets animate
           between bezel-on (Ghost / Network) and bezel-off (View site). */}
       <FrameMask showBezels={showBezels} />

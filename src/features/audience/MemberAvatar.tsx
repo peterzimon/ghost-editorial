@@ -11,7 +11,7 @@ interface MemberAvatarProps {
 export function MemberAvatar({ avatar, name, className = 'size-8' }: MemberAvatarProps) {
   if (avatar.kind === 'photo') {
     return (
-      <div className={cn('shrink-0 overflow-hidden', className)}>
+      <div className={cn('shrink-0 overflow-hidden rounded-full', className)}>
         <img
           src={avatar.src}
           alt={name}
@@ -26,7 +26,7 @@ export function MemberAvatar({ avatar, name, className = 'size-8' }: MemberAvata
   return (
     <div
       className={cn(
-        'shrink-0 flex items-center justify-center text-foreground text-[13px] font-semibold',
+        'shrink-0 flex items-center justify-center rounded-full text-foreground text-[13px] font-semibold',
         className,
       )}
       style={{ backgroundColor: avatar.bg }}

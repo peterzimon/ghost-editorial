@@ -17,7 +17,7 @@ export function MemberRow({ member }: { member: Member }) {
       className="flex gap-2 items-center py-4"
     >
       <div className="flex-1 min-w-0 flex gap-[14px] items-center">
-        <MemberAvatar avatar={member.avatar} name={member.name} className="size-8 rounded-[2px]" />
+        <MemberAvatar avatar={member.avatar} name={member.name} className="size-8" />
         <p className="text-[14px] font-medium text-foreground truncate">{member.name}</p>
       </div>
       <p className="flex-1 min-w-0 text-[12px] text-foreground">{member.openRate}%</p>

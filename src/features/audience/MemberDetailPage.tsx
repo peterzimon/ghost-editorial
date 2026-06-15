@@ -85,15 +85,21 @@ export function MemberDetailPage() {
           aria-hidden
           className="absolute -top-[148px] bottom-0 z-0 pointer-events-none overflow-hidden"
           style={{
-            left: `calc((100% - 100vw) / 2)`,
-            right: `calc((100% - 100vw) / 2)`,
+            // The +/- var(--pinned-shift)/2 compensates for the white card's
+            // padding-left when the sidebar is pinned, so the map still spans
+            // the full viewport width.
+            left: 'calc((100% - 100vw) / 2 - var(--pinned-shift, 0px) / 2)',
+            right: 'calc((100% - 100vw) / 2 + var(--pinned-shift, 0px) / 2)',
+            transitionProperty: 'left, right',
+            transitionDuration: '520ms',
+            transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
           <MemberDetailMap lat={coordsFor(member.location)[0]} lng={coordsFor(member.location)[1]} />
         </div>
         <Page.Header className="relative z-10 items-center border-b-0">
           <div className="flex-1 flex items-center gap-4">
-            <MemberAvatar avatar={member.avatar} name={member.name} className="size-10 rounded-[4px]" />
+            <MemberAvatar avatar={member.avatar} name={member.name} className="size-10" />
             <h1 className="t-h1">{member.name}</h1>
           </div>
           <Page.Actions>
