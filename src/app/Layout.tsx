@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import {
   BEZEL_PX,
@@ -74,6 +74,16 @@ export function Layout() {
   // frame stays put.
   const cardPaddingLeft = pinned && showChrome ? PINNED_CARD_PAD_PX : 0
 
+  // Detect when showChrome itself flips (route in/out of Ghost mode) so we
+  // can suppress the padding-left transition on that specific render —
+  // otherwise navigating back into a pinned Ghost route would visibly
+  // animate the content sliding in from the left edge.
+  const prevShowChromeRef = useRef(showChrome)
+  const showChromeJustChanged = prevShowChromeRef.current !== showChrome
+  useEffect(() => {
+    prevShowChromeRef.current = showChrome
+  })
+
   return (
     <div
       className="min-h-full bg-background relative"
@@ -133,10 +143,12 @@ export function Layout() {
                 ? `calc(100vh - ${TOP_BAR_H_PX + BEZEL_PX}px)`
                 : `calc(100vh - ${TOP_BAR_H_PX}px)`,
             paddingLeft: cardPaddingLeft,
-            // Only animate padding-left while the floating chrome is mounted
-            // (i.e. for pin / unpin clicks). On route changes that toggle
-            // chrome off (View site / Network / AE), snap the padding.
-            transitionProperty: showChrome ? 'padding-left' : 'none',
+            // Only animate padding-left for pin / unpin clicks inside Ghost
+            // mode. Snap on route changes that toggle chrome on or off
+            // (View site / Network / AE), otherwise the content would
+            // visibly slide in from the left when re-entering Ghost.
+            transitionProperty:
+              showChrome && !showChromeJustChanged ? 'padding-left' : 'none',
             transitionDuration: '520ms',
             transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
           }}
