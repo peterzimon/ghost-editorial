@@ -19,10 +19,12 @@ const AVATAR_PILL_PX = 54
 const AVATAR_PILL_PX_COMPACT = 46
 const USER_MENU_WIDTH_PX = 232
 
-/** Shared glass treatment (backdrop + body fill) for both capsules. Very
- *  low body opacity + moderate blur so the page behind genuinely shows
- *  through. The edge ring + sheen come from SHADOW_* and GlassHighlight. */
-const GLASS = 'bg-white/25 backdrop-blur-md backdrop-saturate-150'
+/** Shared glass treatment (backdrop + body fill) for both capsules.
+ *  macOS-inspired: a faint gray-tinted body so the pill reads as a
+ *  surface (not pure transparency), a white outline that catches light,
+ *  plus backdrop-blur so what's behind still shows through. */
+const GLASS =
+  'bg-[rgba(248,248,248,0.5)] backdrop-blur-md backdrop-saturate-150 border border-white/70'
 
 /** Default floating shadow — subtle inset top highlight + hairline
  *  outline + layered drop shadow stack. Six layers, matching the
@@ -395,7 +397,7 @@ function UserMenuItem({
   return (
     <button
       type="button"
-      className="w-full flex items-center gap-3 h-9 px-3 rounded-[4px] transition-colors hover:bg-row-hover cursor-pointer text-left"
+      className="w-full flex items-center gap-3 h-9 px-3 rounded-[4px] transition-colors hover:bg-[rgba(160,160,160,0.15)] cursor-pointer text-left"
     >
       <Icon className="size-4 shrink-0 text-muted" strokeWidth={1.75} />
       <span className="text-[13px] font-medium text-foreground whitespace-nowrap">{label}</span>
