@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 
@@ -12,20 +12,17 @@ export const BEZEL_PX = 10
  */
 export function DeviceFrameTopBar() {
   return (
-    <div className="h-9 px-3 flex items-center gap-5 text-white">
+    <div className="h-9 flex items-center text-white">
       {/* Left: brand + global nav */}
-      <div className="flex-1 min-w-0 flex items-center gap-6">
+      <div className="flex-1 min-w-0 flex items-center gap-6 pl-6">
         <BrandLink />
         <TopBarLink to="/site">View site</TopBarLink>
         <TopBarLink to="/network">Network</TopBarLink>
       </div>
 
-      {/* Right: static stats */}
-      <div className="flex-1 min-w-0 flex items-center justify-end gap-5">
-        <div className="flex items-center gap-2 t-info text-muted">
-          <span>June 15</span>
-          <span>11:13</span>
-        </div>
+      {/* Right: live clock + static stats */}
+      <div className="flex-1 min-w-0 flex items-center justify-end gap-5 pr-6">
+        <Clock />
         <div className="flex items-center gap-2">
           <span className="block size-2 bg-positive" aria-hidden />
           <span className="t-info text-muted">27 Online</span>
@@ -77,5 +74,32 @@ function TopBarLink({ to, children }: { to: string; children: ReactNode }) {
     >
       {children}
     </NavLink>
+  )
+}
+
+/** Live date + HH:MM clock with a blinking colon between hours and minutes. */
+function Clock() {
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(new Date()), 1000)
+    return () => window.clearInterval(id)
+  }, [])
+
+  const date = now.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+  })
+  const hh = String(now.getHours()).padStart(2, '0')
+  const mm = String(now.getMinutes()).padStart(2, '0')
+
+  return (
+    <div className="flex items-center gap-2 t-info text-muted">
+      <span>{date}</span>
+      <span>
+        {hh}
+        <span style={{ animation: 'clock-blink 1s infinite' }}>:</span>
+        {mm}
+      </span>
+    </div>
   )
 }

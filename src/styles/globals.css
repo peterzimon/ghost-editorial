@@ -34,6 +34,15 @@ body,
   interpolate-size: allow-keywords;
 }
 
+@keyframes clock-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
