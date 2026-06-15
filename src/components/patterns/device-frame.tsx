@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 
 export const TOP_BAR_H_PX = 36
@@ -36,25 +36,31 @@ export function DeviceFrameTopBar() {
       {/* Left: brand + global nav */}
       <div className="flex-1 min-w-0 flex items-center gap-6 pl-6">
         <BrandLink />
-        <TopBarLink to="/site">View site</TopBarLink>
-        <TopBarLink to="/network">Network</TopBarLink>
+        <TopBarLink to="/site" shortcut="Option + 2">
+          View site
+        </TopBarLink>
+        <TopBarLink to="/network" shortcut="Option + 3">
+          Network
+        </TopBarLink>
       </div>
 
-      {/* Right: live clock + static stats */}
+      {/* Right: live clock + static stats (linked to Analytics) */}
       <div className="flex-1 min-w-0 flex items-center justify-end gap-5 pr-6">
         <Clock />
-        <div className="flex items-center gap-2">
+        <Link to="/analytics" className="group h-full flex items-center gap-2">
           <span className="block size-2 bg-positive" aria-hidden />
-          <span className="t-info text-muted">27 Online</span>
-        </div>
-        <div className="flex items-center gap-1 t-info">
-          <span className="text-muted">Members</span>
+          <span className="t-info text-muted transition-colors group-hover:text-white">
+            27 Online
+          </span>
+        </Link>
+        <Link to="/analytics" className="group h-full flex items-center gap-1 t-info">
+          <span className="text-muted transition-colors group-hover:text-white">Members</span>
           <span className="text-white">874</span>
-        </div>
-        <div className="flex items-center gap-1 t-info">
-          <span className="text-muted">MRR</span>
+        </Link>
+        <Link to="/analytics" className="group h-full flex items-center gap-1 t-info">
+          <span className="text-muted transition-colors group-hover:text-white">MRR</span>
           <span className="text-white">$1,276</span>
-        </div>
+        </Link>
       </div>
     </div>
   )
@@ -71,6 +77,7 @@ function BrandLink() {
   return (
     <NavLink
       to="/"
+      title="Option + 1"
       className={cn(
         'h-full flex items-center t-info font-semibold transition-colors',
         active ? 'text-white' : 'text-muted hover:text-white',
@@ -81,10 +88,19 @@ function BrandLink() {
   )
 }
 
-function TopBarLink({ to, children }: { to: string; children: ReactNode }) {
+function TopBarLink({
+  to,
+  shortcut,
+  children,
+}: {
+  to: string
+  shortcut?: string
+  children: ReactNode
+}) {
   return (
     <NavLink
       to={to}
+      title={shortcut}
       className={({ isActive }) =>
         cn(
           'h-full flex items-center t-info transition-colors hover:text-white',
