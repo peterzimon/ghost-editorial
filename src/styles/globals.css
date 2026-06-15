@@ -28,6 +28,12 @@ body,
   height: 100%;
 }
 
+:root {
+  /* Allows height/width to transition to/from auto (e.g. the pinned sidebar
+     morph). Chrome/Edge support; a no-op elsewhere. */
+  interpolate-size: allow-keywords;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);

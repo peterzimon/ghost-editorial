@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
-import { LogOut, Settings, User } from 'lucide-react'
+import { LogOut, Pin, Settings, User } from 'lucide-react'
 import { Logomark } from './logomark'
 import { SearchPalette } from './search-palette'
 import { SITE_MENU_WIDTH_PX, SiteMenu } from './site-menu'
@@ -19,10 +19,19 @@ const AVATAR_PILL_PX = 54
 const AVATAR_PILL_PX_COMPACT = 46
 const USER_MENU_WIDTH_PX = 232
 
-/** Shared glass treatment for both capsules. */
+/** Shared glass treatment (background + border) for both capsules. */
 const GLASS =
-  'bg-white/55 backdrop-blur-xl backdrop-saturate-150 border border-white/50 ' +
-  'shadow-[0_0_0.5px_rgba(0,0,0,0.35),0_40px_60px_-15px_rgba(0,0,0,0.18),0_12px_24px_-8px_rgba(0,0,0,0.1),0_3px_8px_rgba(0,0,0,0.04)]'
+  'bg-white/55 backdrop-blur-xl backdrop-saturate-150 border border-white/50'
+
+/** Default floating shadow — used by the avatar capsule and the unpinned
+ * site capsule. */
+const SHADOW_FLOAT =
+  '0 0 0.5px rgba(0,0,0,0.35), 0 40px 60px -15px rgba(0,0,0,0.18), 0 12px 24px -8px rgba(0,0,0,0.1), 0 3px 8px rgba(0,0,0,0.04)'
+
+/** Lighter shadow for the pinned sidebar — softer floating layers plus a
+ * 1px no-blur outline so it still reads against light page backgrounds. */
+const SHADOW_PINNED =
+  '0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px -10px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.03)'
 
 /**
  * Hover-intent open/close with a small close delay so the cursor can travel
@@ -61,12 +70,21 @@ function useHoverIntent() {
  * opens it); the avatar top-right morphs into the user menu on hover. Hosts
  * the global Cmd+K search palette listener.
  */
-export function FloatingChrome() {
+interface FloatingChromeProps {
+  pinned: boolean
+  onPinChange: (pinned: boolean) => void
+}
+
+export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const { pathname } = useLocation()
 
   const site = useHoverIntent()
   const userMenu = useHoverIntent()
+
+  // When pinned, the site capsule is always "open" (height extends to the
+  // viewport bottom; hover-intent is a no-op).
+  const siteOpen = site.open || pinned
 
   // Compact mode below 1380px — shrinks the pills + matches the smaller
   // page title. Tracked in JS so closedWidth / avatar width stay in sync.
@@ -83,7 +101,6 @@ export function FloatingChrome() {
   const avatarPillW = compact ? AVATAR_PILL_PX_COMPACT : AVATAR_PILL_PX
   const closedRadius = compact ? 23 : 27
   const openRadius = compact ? 16 : 20
-  const logoPxClass = compact ? 'px-5' : 'px-6'
   const avatarSizeClass = compact ? 'size-7' : 'size-8'
   const avatarSize = compact ? 28 : 32
   // Symmetric row padding such that the avatar lands at the pill's exact
@@ -133,51 +150,97 @@ export function FloatingChrome() {
       />
 
       {/* Top-left: the liquid-glass site-menu capsule. Always visible as an
-          affordance around the logo; morphs into the full menu on hover. */}
+          affordance around the logo; morphs into the full menu on hover, or
+          stays open + extends to the viewport bottom when pinned. */}
       <div
         onMouseEnter={site.onEnter}
         onMouseLeave={site.onLeave}
         style={{
-          width: site.open ? SITE_MENU_WIDTH_PX : closedWidth,
-          borderRadius: site.open ? openRadius : closedRadius,
-          transitionProperty: 'width, border-radius',
+          width: siteOpen ? SITE_MENU_WIDTH_PX : closedWidth,
+          // `auto` (not undefined) so interpolate-size can transition it.
+          height: pinned ? 'calc(100vh - 32px)' : 'auto',
+          borderRadius: siteOpen ? openRadius : closedRadius,
+          boxShadow: pinned ? SHADOW_PINNED : SHADOW_FLOAT,
+          transitionProperty: 'width, height, border-radius, box-shadow',
           transitionDuration: '520ms',
           // Bump in both directions — the slight dip on close reads fine here.
           transitionTimingFunction: BUMP,
         }}
-        className={cn('fixed top-4 left-4 z-40 overflow-hidden', GLASS)}
+        className={cn(
+          'fixed top-4 left-4 z-40 overflow-hidden flex flex-col',
+          GLASS,
+        )}
       >
         {/* Logo — fixed height + content width so the capsule's width animation
             never stretches or compresses it. px-6 puts the Logomark at
-            x = 16 + 24 = 40, matching the nav items below. */}
+            x = 16 + 24 = 40, matching the nav items below. The pin button
+            appears at the end once the capsule is open. */}
         <div
           ref={logoRef}
-          style={{ height: pillRowH }}
+          style={{
+            height: pillRowH,
+            paddingLeft: compact ? 20 : 24,
+            paddingRight: compact ? 20 : 24,
+          }}
           className={cn(
-            'relative w-max flex items-center gap-2 text-foreground',
-            logoPxClass,
+            'relative shrink-0 flex items-center gap-2 text-foreground',
+            siteOpen ? 'w-full' : 'w-max',
           )}
         >
           <Logomark className="shrink-0" />
           <span className="shrink-0 whitespace-nowrap font-serif-headline text-[18px] font-[500] leading-none tracking-[-0.01em]">
             Shmøergh
           </span>
+          {/* Pin button — absolute so it doesn't take layout space (and so the
+              closed pill measurement hugs the wordmark, not the button). */}
+          <button
+            type="button"
+            onClick={() => onPinChange(!pinned)}
+            aria-label={pinned ? 'Unpin sidebar' : 'Pin sidebar'}
+            style={{ right: 8 }}
+            className={cn(
+              'absolute top-1/2 -translate-y-1/2 size-7 flex items-center justify-center rounded-full text-muted hover:bg-black/5 hover:text-foreground transition-[opacity,color,background-color] duration-200 cursor-pointer',
+              // Visibility tracks the raw hover state (not pinned) so the
+              // button hides when you move off the panel, even in pinned mode.
+              site.open
+                ? 'opacity-100 delay-75 pointer-events-auto'
+                : 'opacity-0 pointer-events-none',
+            )}
+          >
+            <Pin
+              className="size-4 transition-transform duration-300"
+              strokeWidth={1.75}
+              style={{
+                transform: pinned ? 'rotate(45deg)' : 'rotate(0deg)',
+                transitionTimingFunction: SPRING,
+              }}
+            />
+          </button>
         </div>
 
         {/* Nav — unfurls via a grid-rows 0fr→1fr transition so it animates
-            smoothly regardless of how tall the menu is on the active route. */}
+            smoothly regardless of how tall the menu is on the active route.
+            When pinned, switch to flex-1 so it fills the available space. */}
         <div
-          className="grid transition-[grid-template-rows] duration-[450ms]"
-          style={{
-            gridTemplateRows: site.open ? '1fr' : '0fr',
-            transitionTimingFunction: SPRING,
-          }}
+          className={cn(
+            'transition-[grid-template-rows] duration-[450ms] min-h-0',
+            pinned ? 'flex-1 flex' : 'grid',
+          )}
+          style={
+            pinned
+              ? undefined
+              : {
+                  gridTemplateRows: siteOpen ? '1fr' : '0fr',
+                  transitionTimingFunction: SPRING,
+                }
+          }
         >
-          <div className="overflow-hidden">
+          <div className={cn('overflow-hidden', pinned && 'flex-1 flex overflow-y-auto')}>
             <div
               className={cn(
                 'px-3 pt-2 pb-4 transition-opacity duration-200',
-                site.open ? 'opacity-100 delay-75' : 'opacity-0',
+                pinned && 'flex-1 w-full',
+                siteOpen ? 'opacity-100 delay-75' : 'opacity-0',
               )}
             >
               <SiteMenu />
@@ -195,6 +258,7 @@ export function FloatingChrome() {
         style={{
           width: userMenu.open ? USER_MENU_WIDTH_PX : avatarPillW,
           borderRadius: userMenu.open ? openRadius : closedRadius,
+          boxShadow: SHADOW_FLOAT,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
           // Overshoot only while opening; close on the smooth curve so the
