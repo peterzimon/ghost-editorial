@@ -97,7 +97,11 @@ export function Layout() {
               ? `calc(100vh - ${TOP_BAR_H_PX + BEZEL_PX}px)`
               : `calc(100vh - ${TOP_BAR_H_PX}px)`,
             paddingLeft: cardPaddingLeft,
-            transitionProperty: 'padding-left',
+            // Only animate padding-left while the floating chrome is mounted
+            // (i.e. for pin / unpin clicks). On route changes that toggle
+            // chrome off (View site / Network), snap the padding so the
+            // iframe / page doesn't slide in from the sidebar offset.
+            transitionProperty: showChrome ? 'padding-left' : 'none',
             transitionDuration: '520ms',
             transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
           }}
