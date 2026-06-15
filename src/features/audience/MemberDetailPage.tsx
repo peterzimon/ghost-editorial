@@ -72,14 +72,6 @@ export function MemberDetailPage() {
 
   return (
     <Page>
-      <div className="absolute top-[46px] left-10 right-10 z-20">
-        <Breadcrumb
-          items={[
-            { label: 'Members', to: '/audience/members' },
-            { label: member.name },
-          ]}
-        />
-      </div>
       <div className="relative mt-6 pt-[120px]">
         <div
           aria-hidden
@@ -96,6 +88,14 @@ export function MemberDetailPage() {
           }}
         >
           <MemberDetailMap lat={coordsFor(member.location)[0]} lng={coordsFor(member.location)[1]} />
+        </div>
+        <div className="relative z-10 mb-6">
+          <Breadcrumb
+            items={[
+              { label: 'Members', to: '/audience/members' },
+              { label: member.name },
+            ]}
+          />
         </div>
         <Page.Header className="relative z-10 items-center border-b-0">
           <div className="flex-1 flex items-center gap-4">
