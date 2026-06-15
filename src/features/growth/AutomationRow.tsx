@@ -16,7 +16,7 @@ export function AutomationRow({ automation }: { automation: Automation }) {
     >
       <div className="flex-1 min-w-0 flex gap-[14px] items-center">
         <div
-          className="size-8 shrink-0 flex items-center justify-center text-foreground"
+          className="size-8 shrink-0 flex items-center justify-center rounded-full text-foreground"
           style={{ backgroundColor: automation.iconBg }}
         >
           <Icon className="size-4" strokeWidth={1.75} />
