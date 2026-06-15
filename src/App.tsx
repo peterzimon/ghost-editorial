@@ -21,9 +21,6 @@ export default function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* Standalone full-screen routes (no Layout chrome). */}
-        <Route path="/growth/automations/:id" element={<AutomationDetailPage />} />
-
         <Route element={<Layout />}>
           <Route index element={<Navigate to="/analytics" replace />} />
 
@@ -60,6 +57,7 @@ export default function App() {
 
           <Route path="/growth" element={<Navigate to="/growth/automations" replace />} />
           <Route path="/growth/automations" element={<AutomationsPage />} />
+          <Route path="/growth/automations/:id" element={<AutomationDetailPage />} />
           <Route path="/growth/offers" element={<GrowthToolsPage />} />
 
           <Route path="/site" element={<SitePreviewPage />} />
