@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
 
 export const TOP_BAR_H_PX = 36
@@ -11,6 +11,26 @@ export const BEZEL_PX = 10
  * Network nav on the left and the stats strip on the right.
  */
 export function DeviceFrameTopBar() {
+  const navigate = useNavigate()
+
+  // Option + 1 / 2 / 3 → Ghost / View site / Network. Use e.code to side-step
+  // the special characters Option-digit produces on macOS.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!e.altKey || e.metaKey || e.ctrlKey || e.shiftKey) return
+      let to: string | null = null
+      if (e.code === 'Digit1') to = '/'
+      else if (e.code === 'Digit2') to = '/site'
+      else if (e.code === 'Digit3') to = '/network'
+      if (to) {
+        e.preventDefault()
+        navigate(to)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [navigate])
+
   return (
     <div className="h-9 flex items-center text-white">
       {/* Left: brand + global nav */}
@@ -52,7 +72,7 @@ function BrandLink() {
     <NavLink
       to="/"
       className={cn(
-        't-info font-semibold transition-colors',
+        'h-full flex items-center t-info font-semibold transition-colors',
         active ? 'text-white' : 'text-muted hover:text-white',
       )}
     >
@@ -67,7 +87,7 @@ function TopBarLink({ to, children }: { to: string; children: ReactNode }) {
       to={to}
       className={({ isActive }) =>
         cn(
-          't-info transition-colors hover:text-white',
+          'h-full flex items-center t-info transition-colors hover:text-white',
           isActive ? 'text-white' : 'text-muted',
         )
       }

@@ -32,11 +32,12 @@ const GLASS =
 const SHADOW_FLOAT =
   'inset 0 1px 0 rgba(255,255,255,0.55), inset 0 -1px 0 rgba(255,255,255,0.12), 0 0 0 0.5px rgba(0,0,0,0.06), 0 40px 60px -15px rgba(0,0,0,0.18), 0 12px 24px -8px rgba(0,0,0,0.1), 0 3px 8px rgba(0,0,0,0.04)'
 
-/** Softer shadow for the pinned sidebar — anchored, less floaty. Same
- *  six-layer structure as SHADOW_FLOAT so they interpolate without
- *  snapping (CSS can't interpolate mismatched shadow stacks). */
+/** Pinned sidebar: just a 1px spread outline for definition; the other
+ *  layers fade to fully transparent so the panel reads as anchored, not
+ *  floating. Layer structure matches SHADOW_FLOAT 1:1 so the transition
+ *  to/from the float shadow interpolates without snapping. */
 const SHADOW_PINNED =
-  'inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(255,255,255,0), 0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px -10px rgba(0,0,0,0.06), 0 4px 12px -4px rgba(0,0,0,0.04), 0 2px 6px rgba(0,0,0,0.03)'
+  'inset 0 1px 0 rgba(255,255,255,0), inset 0 -1px 0 rgba(255,255,255,0), 0 0 0 1px rgba(0,0,0,0.06), 0 8px 24px -10px rgba(0,0,0,0), 0 4px 12px -4px rgba(0,0,0,0), 0 2px 6px rgba(0,0,0,0)'
 
 /** Specular sheen overlay — gentle top-edge highlight that fades quickly
  *  so the body stays translucent. Inherits border-radius. */
