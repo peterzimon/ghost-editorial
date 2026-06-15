@@ -73,9 +73,16 @@ function useHoverIntent(closeDelayMs = 120) {
 interface FloatingChromeProps {
   pinned: boolean
   onPinChange: (pinned: boolean) => void
+  /** When the page is wrapped in the device frame, the capsules need to
+   *  shift down past the top bar and inward past the bezel. */
+  framed?: boolean
 }
 
-export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
+// Device-frame insets — kept in sync with DeviceFrame's layout.
+const FRAME_TOP_BAR_PX = 36
+const FRAME_BEZEL_PX = 10
+
+export function FloatingChrome({ pinned, onPinChange, framed = false }: FloatingChromeProps) {
   const [searchOpen, setSearchOpen] = useState(false)
   const { pathname } = useLocation()
 
@@ -105,6 +112,19 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
   const openRadius = compact ? 16 : 20
   const avatarSizeClass = compact ? 'size-7' : 'size-8'
   const avatarSize = compact ? 28 : 32
+
+  // When framed, anchor the capsules + hot zone to the inside of the white
+  // card (= viewport top + top bar, viewport sides + bezel), so they don't
+  // overlap the device-frame top bar.
+  const capsuleTopPx = framed ? FRAME_TOP_BAR_PX + 16 : 16 // 52 vs 16
+  const capsuleSidePx = framed ? FRAME_BEZEL_PX + 16 : 16 // 24 vs 16
+  const hotZoneTopPx = framed ? FRAME_TOP_BAR_PX : 0
+  const hotZoneLeftPx = framed ? FRAME_BEZEL_PX : 0
+  // Pinned capsule fills the available vertical space: viewport minus top
+  // bar, bottom bezel, and the 16px inset at top + bottom.
+  const pinnedCapsuleHeight = framed
+    ? `calc(100vh - ${FRAME_TOP_BAR_PX + FRAME_BEZEL_PX + 32}px)`
+    : 'calc(100vh - 32px)'
   // Symmetric row padding such that the avatar lands at the pill's exact
   // horizontal center when closed. The pill has a 1px border on each side,
   // so the row's content area is (pillW - 2), not pillW.
@@ -143,10 +163,15 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
   return (
     <>
       {/* Hot zone — invisible strip along the left edge that scales with the
-          page gutter, so hovering the left side of the page reveals the menu. */}
+          page gutter, so hovering the left side of the page reveals the menu.
+          When framed, sits below the top bar and inside the left bezel. */}
       <div
-        className="fixed top-0 left-0 bottom-0 z-30"
-        style={{ width: 'clamp(40px, calc((100vw - 1280px) / 2 + 40px), 160px)' }}
+        className="fixed bottom-0 z-30"
+        style={{
+          top: hotZoneTopPx,
+          left: hotZoneLeftPx,
+          width: 'clamp(40px, calc((100vw - 1280px) / 2 + 40px), 160px)',
+        }}
         onMouseEnter={site.onEnter}
         onMouseLeave={site.onLeave}
       />
@@ -160,13 +185,14 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
       <div
         onMouseEnter={site.onEnter}
         onMouseLeave={site.onLeave}
-        className="fixed top-4 left-4 z-40 flex items-stretch"
+        style={{ top: capsuleTopPx, left: capsuleSidePx }}
+        className="fixed z-40 flex items-stretch"
       >
         <div
           style={{
             width: siteOpen ? SITE_MENU_WIDTH_PX : closedWidth,
             // `auto` (not undefined) so interpolate-size can transition it.
-            height: pinned ? 'calc(100vh - 32px)' : 'auto',
+            height: pinned ? pinnedCapsuleHeight : 'auto',
             borderRadius: siteOpen ? openRadius : closedRadius,
             boxShadow: pinned ? SHADOW_PINNED : SHADOW_FLOAT,
             transitionProperty: 'width, height, border-radius, box-shadow',
@@ -272,13 +298,15 @@ export function FloatingChrome({ pinned, onPinChange }: FloatingChromeProps) {
           width: userMenu.open ? USER_MENU_WIDTH_PX : avatarPillW,
           borderRadius: userMenu.open ? openRadius : closedRadius,
           boxShadow: SHADOW_FLOAT,
+          top: capsuleTopPx,
+          right: capsuleSidePx,
           transitionProperty: 'width, border-radius',
           transitionDuration: '520ms',
           // Overshoot only while opening; close on the smooth curve so the
           // width never dips below the avatar circle (which would clip it).
           transitionTimingFunction: userMenu.open ? BUMP : SPRING,
         }}
-        className={cn('fixed top-4 right-4 z-40 overflow-hidden', GLASS)}
+        className={cn('fixed z-40 overflow-hidden', GLASS)}
       >
         {/* Avatar row — fixed 52px circle band. Avatar sits on the left and
             travels leftward with the growing capsule; the name block to its

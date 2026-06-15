@@ -3,9 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import {
   BadgePercent,
   FileText,
-  Globe,
   Image,
-  LayoutTemplate,
   MessageSquare,
   PenLine,
   Tag,
@@ -46,8 +44,6 @@ type Entry = Leaf | Group
 
 const ENTRIES: Entry[] = [
   { kind: 'leaf', label: 'Analytics', to: '/analytics', icon: TrendingUp },
-  { kind: 'leaf', label: 'View site', to: '/site', icon: LayoutTemplate },
-  { kind: 'leaf', label: 'Network', to: '/network', icon: Globe },
   {
     kind: 'group',
     label: 'Content',
