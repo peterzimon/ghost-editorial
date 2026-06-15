@@ -20,21 +20,25 @@ const CARD_RADIUS_PX = 10
 
 /** A single fixed transparent rounded rectangle whose huge box-shadow paints
  *  the entire bezel area around it. The content scrolls behind via the
- *  body; the shadow stays put, giving us always-visible rounded inner
- *  corners on the white card.
+ *  body; the shadow stays put. The inset values + radius animate when the
+ *  page switches between bezel-on (Ghost / Network) and bezel-off (View
+ *  site), so the side + bottom bezels visually retract / extend.
  */
-function FrameMask() {
+function FrameMask({ showBezels }: { showBezels: boolean }) {
   return (
     <div
       aria-hidden
       className="fixed pointer-events-none z-30"
       style={{
         top: TOP_BAR_H_PX,
-        left: BEZEL_PX,
-        right: BEZEL_PX,
-        bottom: BEZEL_PX,
-        borderRadius: CARD_RADIUS_PX,
+        left: showBezels ? BEZEL_PX : 0,
+        right: showBezels ? BEZEL_PX : 0,
+        bottom: showBezels ? BEZEL_PX : 0,
+        borderRadius: showBezels ? CARD_RADIUS_PX : 0,
         boxShadow: '0 0 0 9999px #191919',
+        transitionProperty: 'left, right, bottom, border-radius',
+        transitionDuration: '520ms',
+        transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
       }}
     />
   )
@@ -57,20 +61,9 @@ export function Layout() {
 
   return (
     <div className="min-h-full bg-background relative">
-      {/* Frame mask — single fixed rounded transparent rectangle with a huge
-          black box-shadow that paints the entire bezel area around the
-          content. Rounded corners stay visible at viewport edges regardless
-          of scroll. Skipped in View site mode (no bezels there — top bar
-          alone, painted as its own bg below). */}
-      {showBezels ? (
-        <FrameMask />
-      ) : (
-        <div
-          aria-hidden
-          className="fixed top-0 left-0 right-0 z-30 bg-[#191919]"
-          style={{ height: TOP_BAR_H_PX }}
-        />
-      )}
+      {/* Frame mask — same fixed element in every mode. Its insets animate
+          between bezel-on (Ghost / Network) and bezel-off (View site). */}
+      <FrameMask showBezels={showBezels} />
 
       {/* Top bar — fixed, above the frame mask so the nav text + stats sit on
           top of the black band the mask paints. */}
@@ -113,7 +106,7 @@ export function Layout() {
             className={cn(
               'w-full',
               viewSite
-                ? 'h-[calc(100vh-36px)]'
+                ? 'h-[calc(100vh-36px)] bg-[#2a2a2a]'
                 : 'relative min-h-full max-w-[1080px] min-[1380px]:max-w-[1280px] mx-auto px-10 pt-[max(100px,4vw)]',
             )}
           >

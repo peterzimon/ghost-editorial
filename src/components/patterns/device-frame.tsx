@@ -28,7 +28,7 @@ export function DeviceFrameTopBar() {
           <span className="t-info text-muted">27 Online</span>
         </div>
         <div className="flex items-center gap-1 t-info">
-          <span className="text-muted">Subs</span>
+          <span className="text-muted">Members</span>
           <span className="text-white">874</span>
         </div>
         <div className="flex items-center gap-1 t-info">
