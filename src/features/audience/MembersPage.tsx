@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { ListFilter, MoreHorizontal, Plus, Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
+import { Breadcrumb } from '@/components/patterns/breadcrumb'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
+import { SavedViewsBar, type SavedViewItem } from '@/components/patterns/saved-views-bar'
 import { MemberList } from './MemberList'
 
 export type MembersFilter = 'all' | 'vip' | 'friends' | 'early-birds'
@@ -13,6 +15,12 @@ const TITLES: Record<MembersFilter, string> = {
   friends: 'Friends & Family',
   'early-birds': 'Early birds',
 }
+
+const SAVED_VIEWS: SavedViewItem[] = [
+  { label: 'VIP', to: '/audience/members/vip' },
+  { label: 'Friends & Family', to: '/audience/members/friends' },
+  { label: 'Early birds', to: '/audience/members/early-birds' },
+]
 
 const MEMBER_FILTER_POOL: FilterChip[] = [
   { id: 'status', field: 'Member status', value: 'Complimentary' },
@@ -58,9 +66,27 @@ export function MembersPage({ filter }: MembersPageProps) {
     setQuery('')
   }
 
+  const isView = filter !== 'all'
+  const showSavedViews = !isView && !filterOpen && !searchOpen
+  const headerBorderOff = filterOpen || showSavedViews
+
+  const headerClass = [
+    'min-h-[80px]',
+    headerBorderOff ? 'border-b-0' : '',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <Page>
-      <Page.Header className={filterOpen ? 'min-h-[80px] border-b-0' : 'min-h-[80px]'}>
+      {isView && !searchOpen && (
+        <div className="mb-6">
+          <Breadcrumb
+            items={[{ label: 'Members', to: '/audience/members' }, { label: TITLES[filter] }]}
+          />
+        </div>
+      )}
+      <Page.Header className={headerClass}>
         {searchOpen ? (
           <>
             <input
@@ -108,6 +134,7 @@ export function MembersPage({ filter }: MembersPageProps) {
       </Page.Header>
 
       <Page.Content>
+        {showSavedViews && <SavedViewsBar items={SAVED_VIEWS} />}
         {filterOpen && (
           <FilterBar
             chips={chips}

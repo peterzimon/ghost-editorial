@@ -52,13 +52,16 @@ const ENTRIES: Entry[] = [
         kind: 'leaf',
         label: 'Posts',
         to: '/content/posts',
-        end: true,
         icon: PenLine,
-        subItems: [
-          { label: 'Drafts', to: '/content/posts/drafts' },
-          { label: 'Scheduled', to: '/content/posts/scheduled' },
-          { label: 'Published', to: '/content/posts/published' },
-        ],
+        // Saved-view sub-items are surfaced under the page header as pills
+        // now (see SavedViewsBar). Kept here, commented, in case we want to
+        // bring them back into the sidebar.
+        // end: true,
+        // subItems: [
+        //   { label: 'Drafts', to: '/content/posts/drafts' },
+        //   { label: 'Scheduled', to: '/content/posts/scheduled' },
+        //   { label: 'Published', to: '/content/posts/published' },
+        // ],
       },
       { kind: 'leaf', label: 'Pages', to: '/content/pages', icon: FileText },
       { kind: 'leaf', label: 'Tags', to: '/content/tags', icon: Tag },
@@ -73,13 +76,15 @@ const ENTRIES: Entry[] = [
         kind: 'leaf',
         label: 'Members',
         to: '/audience/members',
-        end: true,
         icon: User,
-        subItems: [
-          { label: 'VIP', to: '/audience/members/vip' },
-          { label: 'Friends & Family', to: '/audience/members/friends' },
-          { label: 'Early birds', to: '/audience/members/early-birds' },
-        ],
+        // Saved-view sub-items moved into the SavedViewsBar below the page
+        // header. Kept here, commented, in case we want them in the sidebar.
+        // end: true,
+        // subItems: [
+        //   { label: 'VIP', to: '/audience/members/vip' },
+        //   { label: 'Friends & Family', to: '/audience/members/friends' },
+        //   { label: 'Early birds', to: '/audience/members/early-birds' },
+        // ],
       },
       { kind: 'leaf', label: 'Comments', to: '/audience/comments', icon: MessageSquare },
     ],

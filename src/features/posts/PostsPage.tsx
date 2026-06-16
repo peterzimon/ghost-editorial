@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 import { ListFilter, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Page } from '@/components/templates/page'
+import { Breadcrumb } from '@/components/patterns/breadcrumb'
 import { FilterBar, type FilterChip } from '@/components/patterns/filter-bar'
+import { SavedViewsBar, type SavedViewItem } from '@/components/patterns/saved-views-bar'
 import { mockPosts, type PostStatus } from './mockPosts'
 import { PostRow } from './PostRow'
 
@@ -20,6 +22,12 @@ const STATUS_LABEL: Record<PostStatus, string> = {
   scheduled: 'Scheduled',
   published: 'Published',
 }
+
+const SAVED_VIEWS: SavedViewItem[] = [
+  { label: 'Drafts', to: '/content/posts/drafts' },
+  { label: 'Scheduled', to: '/content/posts/scheduled' },
+  { label: 'Published', to: '/content/posts/published' },
+]
 
 const POST_FILTER_POOL: FilterChip[] = [
   { id: 'author', field: 'Author', value: 'Maren Calzoni' },
@@ -46,7 +54,7 @@ export function PostsPage({ filter }: PostsPageProps) {
   const [filterOpen, setFilterOpen] = useState(filter !== 'all')
   const [chips, setChips] = useState<FilterChip[]>(() => presetChips(filter))
 
-  // Sync filter bar to the active view when the sub-nav tab changes.
+  // Sync filter bar to the active view when the route changes.
   useEffect(() => {
     setFilterOpen(filter !== 'all')
     setChips(presetChips(filter))
@@ -58,9 +66,20 @@ export function PostsPage({ filter }: PostsPageProps) {
   }
   const removeChip = (id: string) => setChips(chips.filter((c) => c.id !== id))
 
+  const isView = filter !== 'all'
+  const showSavedViews = !isView && !filterOpen
+  const headerBorderOff = filterOpen || showSavedViews
+
   return (
     <Page>
-      <Page.Header className={filterOpen ? 'border-b-0' : undefined}>
+      {isView && (
+        <div className="mb-6">
+          <Breadcrumb
+            items={[{ label: 'Posts', to: '/content/posts' }, { label: TITLES[filter] }]}
+          />
+        </div>
+      )}
+      <Page.Header className={headerBorderOff ? 'border-b-0' : undefined}>
         <Page.Title>{TITLES[filter]}</Page.Title>
         <Page.Actions>
           <Button
@@ -78,6 +97,7 @@ export function PostsPage({ filter }: PostsPageProps) {
       </Page.Header>
 
       <Page.Content>
+        {showSavedViews && <SavedViewsBar items={SAVED_VIEWS} />}
         {filterOpen && (
           <FilterBar
             chips={chips}
