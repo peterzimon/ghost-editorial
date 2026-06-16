@@ -35,7 +35,7 @@ export function PostRow({ post }: PostRowProps) {
         </p>
       </div>
 
-      <div className="absolute right-8 top-[43px]">
+      <div className="absolute right-4 top-[43px]">
         <PostActionsMenu postId={post.id} />
       </div>
     </ListRow>

@@ -3,7 +3,7 @@ import type { ReaderArticle } from './reader-data'
 
 export function ReaderArticleRow({ article }: { article: ReaderArticle }) {
   return (
-    <ListRow className="flex gap-8 items-start py-6 -mr-10 pr-10 after:right-10">
+    <ListRow className="flex gap-8 items-start py-6">
       <div className="flex-1 min-w-0 flex flex-col gap-2">
         <div className="flex items-center gap-2 text-[13px]">
           <span

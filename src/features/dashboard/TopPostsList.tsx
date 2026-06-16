@@ -14,7 +14,7 @@ export function TopPostsList({ posts }: { posts: DashboardPost[] }) {
       <SectionHeading>Recent posts</SectionHeading>
 
       <div className="flex flex-col">
-        <div className="flex items-center gap-4 t-info text-muted h-[52px] py-4 border-b border-border">
+        <div className="flex items-center gap-4 t-info text-muted h-[52px] px-4 py-4 border-b border-border">
           <p className="flex-1">Post</p>
           <p className={STAT_COL}>Visitors</p>
           <p className={STAT_COL}>Members</p>
