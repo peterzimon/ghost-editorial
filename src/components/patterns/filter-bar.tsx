@@ -1,4 +1,5 @@
 import { Plus, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export interface FilterChip {
   id: string
@@ -15,7 +16,7 @@ interface FilterBarProps {
 
 export function FilterBar({ chips, onAdd, onRemove, onSaveView }: FilterBarProps) {
   return (
-    <div className="bg-elevated flex items-center justify-between gap-4 px-5 h-[52px]">
+    <div className="bg-elevated flex items-center justify-between gap-4 px-3 h-[52px] rounded-[8px]">
       <div className="flex items-center gap-2 flex-wrap">
         {chips.map((chip) => (
           <FilterChipPill key={chip.id} chip={chip} onRemove={() => onRemove(chip.id)} />
@@ -30,13 +31,9 @@ export function FilterBar({ chips, onAdd, onRemove, onSaveView }: FilterBarProps
         </button>
       </div>
       {onSaveView && (
-        <button
-          type="button"
-          onClick={onSaveView}
-          className="t-button text-foreground px-3 py-2 cursor-pointer hover:bg-background transition-colors"
-        >
+        <Button variant="secondary" onClick={onSaveView}>
           Save view
-        </button>
+        </Button>
       )}
     </div>
   )
@@ -44,7 +41,7 @@ export function FilterBar({ chips, onAdd, onRemove, onSaveView }: FilterBarProps
 
 function FilterChipPill({ chip, onRemove }: { chip: FilterChip; onRemove: () => void }) {
   return (
-    <div className="bg-background flex items-center h-7 rounded-[2px] text-[12px]">
+    <div className="bg-background flex items-center h-7 rounded-[6px] text-[12px]">
       <span className="px-3 text-foreground">{chip.field}</span>
       <span className="px-2 text-muted border-l border-r border-border h-full flex items-center">
         is

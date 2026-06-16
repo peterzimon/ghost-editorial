@@ -60,7 +60,7 @@ export function MembersPage({ filter }: MembersPageProps) {
 
   return (
     <Page>
-      <Page.Header className="min-h-[80px]">
+      <Page.Header className={filterOpen ? 'min-h-[80px] border-b-0' : 'min-h-[80px]'}>
         {searchOpen ? (
           <>
             <input

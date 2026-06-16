@@ -60,7 +60,7 @@ export function PostsPage({ filter }: PostsPageProps) {
 
   return (
     <Page>
-      <Page.Header>
+      <Page.Header className={filterOpen ? 'border-b-0' : undefined}>
         <Page.Title>{TITLES[filter]}</Page.Title>
         <Page.Actions>
           <Button
