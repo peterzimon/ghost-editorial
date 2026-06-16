@@ -141,8 +141,10 @@ export function FloatingChrome({ pinned, onPinChange, framed = false }: Floating
   // overlap the device-frame top bar.
   const capsuleTopPx = framed ? FRAME_TOP_BAR_PX + 16 : 16 // 52 vs 16
   const capsuleSidePx = framed ? FRAME_BEZEL_PX + 16 : 16 // 24 vs 16
-  const hotZoneTopPx = framed ? FRAME_TOP_BAR_PX : 0
-  const hotZoneLeftPx = framed ? FRAME_BEZEL_PX : 0
+  // Hot zones extend all the way to the viewport edges, so moving the
+  // cursor BEYOND the pill toward the corner doesn't trip a collapse.
+  const hotZoneTopPx = 0
+  const hotZoneLeftPx = 0
   // Pinned capsule fills the available vertical space: viewport minus top
   // bar, bottom bezel, and the 16px inset at top + bottom.
   const pinnedCapsuleHeight = framed
@@ -311,6 +313,17 @@ export function FloatingChrome({ pinned, onPinChange, framed = false }: Floating
             travels off the capsule. Only active when meaningfully open. */}
         {siteOpen && !pinned && <div aria-hidden className="w-12 shrink-0" />}
       </div>
+
+      {/* Right hot zone — mirror of the left one. Keeps the user-menu pill
+          open while the cursor wanders into the top-right corner. */}
+      <div
+        className="fixed top-0 right-0 bottom-0 z-30"
+        style={{
+          width: 'clamp(40px, calc((100vw - 1280px) / 2 + 40px), 160px)',
+        }}
+        onMouseEnter={userMenu.onEnter}
+        onMouseLeave={userMenu.onLeave}
+      />
 
       {/* Top-right: the liquid-glass user-menu capsule. Closed it's a circle
           hugging the avatar; on hover it morphs into the user menu, growing
