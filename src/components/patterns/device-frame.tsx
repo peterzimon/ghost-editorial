@@ -1,17 +1,22 @@
 import { useEffect, useState, type ReactNode } from 'react'
+import { Search } from 'lucide-react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/cn'
+import { SearchPalette } from './search-palette'
 
-export const TOP_BAR_H_PX = 36
+export const TOP_BAR_H_PX = 44
 export const BEZEL_PX = 10
 
 /**
- * The 36px black top bar. Rendered as a child of a `fixed` parent in Layout
- * so it stays visible during scroll. Holds the global GHOST / View site /
- * Network nav on the left and the stats strip on the right.
+ * The 44px black top bar (the "app bezel"). Rendered as a child of a
+ * `fixed` parent in Layout so it stays visible during scroll.
+ *
+ * Laid out as a 3-column grid so the search field always sits true-center
+ * even as the left/right item counts shift.
  */
 export function DeviceFrameTopBar() {
   const navigate = useNavigate()
+  const [searchOpen, setSearchOpen] = useState(false)
 
   // Option + 1 / 2 / 3 → Ghost / View site / Network. Use e.code to side-step
   // the special characters Option-digit produces on macOS.
@@ -31,10 +36,22 @@ export function DeviceFrameTopBar() {
     return () => window.removeEventListener('keydown', onKey)
   }, [navigate])
 
+  // ⌘K / Ctrl+K toggles the search palette.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setSearchOpen((v) => !v)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
-    <div className="h-9 flex items-center text-white">
+    <div className="h-11 grid grid-cols-3 items-center text-white">
       {/* Left: brand + global nav */}
-      <div className="flex-1 min-w-0 flex items-center gap-6 pl-6">
+      <div className="flex items-center gap-6 pl-6">
         <BrandLink />
         <TopBarLink to="/site" shortcut="Option + 2">
           View site
@@ -44,24 +61,31 @@ export function DeviceFrameTopBar() {
         </TopBarLink>
       </div>
 
+      {/* Center: liquid-glass search */}
+      <div className="flex justify-center">
+        <BezelSearch onClick={() => setSearchOpen(true)} />
+      </div>
+
       {/* Right: live clock + static stats (linked to Analytics) */}
-      <div className="flex-1 min-w-0 flex items-center justify-end gap-5 pr-6">
+      <div className="flex items-center justify-end gap-5 pr-6">
         <Clock />
-        <Link to="/analytics" className="group h-9 flex items-center gap-2">
+        <Link to="/analytics" className="group h-11 flex items-center gap-2">
           <span className="block size-2 bg-positive" aria-hidden />
           <span className="t-info text-muted transition-colors group-hover:text-white">
             27 Online
           </span>
         </Link>
-        <Link to="/analytics" className="group h-9 flex items-center gap-1 t-info">
+        <Link to="/analytics" className="group h-11 flex items-center gap-1 t-info">
           <span className="text-muted transition-colors group-hover:text-white">Members</span>
           <span className="text-white">874</span>
         </Link>
-        <Link to="/analytics" className="group h-9 flex items-center gap-1 t-info">
+        <Link to="/analytics" className="group h-11 flex items-center gap-1 t-info">
           <span className="text-muted transition-colors group-hover:text-white">MRR</span>
           <span className="text-white">$1,276</span>
         </Link>
       </div>
+
+      <SearchPalette open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   )
 }
@@ -79,7 +103,7 @@ function BrandLink() {
       to="/"
       title="Option + 1"
       className={cn(
-        'h-9 flex items-center t-info font-semibold transition-colors',
+        'h-11 flex items-center t-info font-semibold transition-colors',
         active ? 'text-white' : 'text-muted hover:text-white',
       )}
     >
@@ -103,13 +127,37 @@ function TopBarLink({
       title={shortcut}
       className={({ isActive }) =>
         cn(
-          'h-9 flex items-center t-info transition-colors hover:text-white',
+          'h-11 flex items-center t-info transition-colors hover:text-white',
           isActive ? 'text-white' : 'text-muted',
         )
       }
     >
       {children}
     </NavLink>
+  )
+}
+
+/**
+ * Subtle dark "liquid glass" search field. Visual-only for now — clicking
+ * it doesn't open a palette yet, but the affordance reads as a real input
+ * with a hover state.
+ */
+function BezelSearch({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      title="Search"
+      onClick={onClick}
+      className="group h-7 w-full max-w-[480px] flex items-center gap-2 px-3 rounded-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 backdrop-blur-sm transition-colors cursor-pointer"
+      style={{
+        boxShadow:
+          'inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.2)',
+      }}
+    >
+      <Search className="size-3.5 text-muted shrink-0" strokeWidth={1.75} />
+      <span className="t-info text-muted flex-1 text-left">Search</span>
+      <span className="t-info text-muted">⌘K</span>
+    </button>
   )
 }
 
