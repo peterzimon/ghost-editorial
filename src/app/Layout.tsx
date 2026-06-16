@@ -57,17 +57,19 @@ export function Layout() {
   const { pathname } = useLocation()
   const viewSite = pathname === '/site'
   const network = pathname === '/network' || pathname.startsWith('/network/')
-  // Automation editor: full-bleed, the device chrome animates out and the
-  // editor's own top bar slides in (handled in AutomationDetailPage).
+  // Full-screen editors: device chrome animates out and the editor's own
+  // top bar slides in (handled in the page component).
   const isAutomationEditor = /^\/growth\/automations\/[^/]+$/.test(pathname)
+  const isPostEditor = /^\/content\/posts\/[^/]+\/edit$/.test(pathname)
+  const isFullEditor = isAutomationEditor || isPostEditor
   // Floating chrome only appears in "Ghost mode" — everywhere except the
-  // top-bar tabs and the automation editor.
-  const showChrome = !viewSite && !network && !isAutomationEditor
-  // Side + bottom bezels render for every mode except View site and the
-  // automation editor.
-  const showBezels = !viewSite && !isAutomationEditor
-  // The top bar slides up out of view in the automation editor.
-  const hideTopBar = isAutomationEditor
+  // top-bar tabs and full-screen editors.
+  const showChrome = !viewSite && !network && !isFullEditor
+  // Side + bottom bezels render for every mode except View site and full-
+  // screen editors.
+  const showBezels = !viewSite && !isFullEditor
+  // The top bar slides up out of view in full-screen editors.
+  const hideTopBar = isFullEditor
 
   const [pinned, setPinned] = useState(false)
   // Only the content inside the white card gets shifted when pinned. The
@@ -97,7 +99,7 @@ export function Layout() {
     >
       {/* Frame mask — top inset retracts when entering the automation editor
           so the whole frame disappears. */}
-      <FrameMask showBezels={showBezels} showTopBezel={!isAutomationEditor} />
+      <FrameMask showBezels={showBezels} showTopBezel={!isFullEditor} />
 
       {/* Top bar — slides up out of view when entering the automation editor. */}
       <div
@@ -122,7 +124,7 @@ export function Layout() {
       <div
         className="min-h-full"
         style={{
-          paddingTop: isAutomationEditor ? 0 : TOP_BAR_H_PX,
+          paddingTop: isFullEditor ? 0 : TOP_BAR_H_PX,
           paddingLeft: showBezels ? BEZEL_PX : 0,
           paddingRight: showBezels ? BEZEL_PX : 0,
           paddingBottom: showBezels ? BEZEL_PX : 0,
@@ -136,8 +138,8 @@ export function Layout() {
           style={{
             // AE needs an explicit height so its h-full children can cascade
             // to fill the viewport; other modes only need min-height.
-            height: isAutomationEditor ? '100vh' : undefined,
-            minHeight: isAutomationEditor
+            height: isFullEditor ? '100vh' : undefined,
+            minHeight: isFullEditor
               ? undefined
               : showBezels
                 ? `calc(100vh - ${TOP_BAR_H_PX + BEZEL_PX}px)`
@@ -156,7 +158,7 @@ export function Layout() {
           <main
             className={cn(
               'w-full',
-              isAutomationEditor
+              isFullEditor
                 ? 'h-full'
                 : viewSite
                   ? 'h-[calc(100vh-36px)] bg-[#2a2a2a]'
