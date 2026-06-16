@@ -314,12 +314,17 @@ export function FloatingChrome({ pinned, onPinChange, framed = false }: Floating
         {siteOpen && !pinned && <div aria-hidden className="w-12 shrink-0" />}
       </div>
 
-      {/* Right hot zone — mirror of the left one. Keeps the user-menu pill
-          open while the cursor wanders into the top-right corner. */}
+      {/* Right hot zone — only covers the top-right corner around the
+          avatar pill, not the full right edge. Extends sideways to the
+          viewport edge so the cursor can drift past the pill into the
+          corner, but does NOT extend downward — the pill is a smaller
+          target than the site menu and shouldn't open from anywhere
+          along the right side. */}
       <div
-        className="fixed top-0 right-0 bottom-0 z-30"
+        className="fixed top-0 right-0 z-30"
         style={{
           width: 'clamp(40px, calc((100vw - 1280px) / 2 + 40px), 160px)',
+          height: capsuleTopPx + pillRowH,
         }}
         onMouseEnter={userMenu.onEnter}
         onMouseLeave={userMenu.onLeave}
