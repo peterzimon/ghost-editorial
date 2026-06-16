@@ -47,17 +47,17 @@ export function DeviceFrameTopBar() {
       {/* Right: live clock + static stats (linked to Analytics) */}
       <div className="flex-1 min-w-0 flex items-center justify-end gap-5 pr-6">
         <Clock />
-        <Link to="/analytics" className="group h-full flex items-center gap-2">
+        <Link to="/analytics" className="group h-9 flex items-center gap-2">
           <span className="block size-2 bg-positive" aria-hidden />
           <span className="t-info text-muted transition-colors group-hover:text-white">
             27 Online
           </span>
         </Link>
-        <Link to="/analytics" className="group h-full flex items-center gap-1 t-info">
+        <Link to="/analytics" className="group h-9 flex items-center gap-1 t-info">
           <span className="text-muted transition-colors group-hover:text-white">Members</span>
           <span className="text-white">874</span>
         </Link>
-        <Link to="/analytics" className="group h-full flex items-center gap-1 t-info">
+        <Link to="/analytics" className="group h-9 flex items-center gap-1 t-info">
           <span className="text-muted transition-colors group-hover:text-white">MRR</span>
           <span className="text-white">$1,276</span>
         </Link>
@@ -79,7 +79,7 @@ function BrandLink() {
       to="/"
       title="Option + 1"
       className={cn(
-        'h-full flex items-center t-info font-semibold transition-colors',
+        'h-9 flex items-center t-info font-semibold transition-colors',
         active ? 'text-white' : 'text-muted hover:text-white',
       )}
     >
@@ -103,7 +103,7 @@ function TopBarLink({
       title={shortcut}
       className={({ isActive }) =>
         cn(
-          'h-full flex items-center t-info transition-colors hover:text-white',
+          'h-9 flex items-center t-info transition-colors hover:text-white',
           isActive ? 'text-white' : 'text-muted',
         )
       }
