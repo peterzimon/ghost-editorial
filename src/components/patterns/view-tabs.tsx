@@ -27,7 +27,7 @@ export function ViewTabs({ items, className }: ViewTabsProps) {
           end={item.end}
           className={({ isActive }) =>
             cn(
-              'inline-flex items-center justify-center h-9 px-5 rounded-full t-button whitespace-nowrap shrink-0 transition-colors cursor-pointer',
+              'inline-flex items-center justify-center h-8 px-5 rounded-full t-button whitespace-nowrap shrink-0 transition-colors cursor-pointer',
               isActive
                 ? 'bg-foreground text-white'
                 : 'bg-elevated text-foreground hover:bg-control-hover',
