@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { LogOut, Pin, Settings, User } from 'lucide-react'
+import { BEZEL_PX, TOP_BAR_H_PX } from './device-frame'
 import { Logomark } from './logomark'
 import { SearchPalette } from './search-palette'
 import { SITE_MENU_WIDTH_PX, SiteMenu } from './site-menu'
@@ -100,9 +101,9 @@ interface FloatingChromeProps {
   framed?: boolean
 }
 
-// Device-frame insets — kept in sync with DeviceFrame's layout.
-const FRAME_TOP_BAR_PX = 36
-const FRAME_BEZEL_PX = 10
+// Device-frame insets — imported from DeviceFrame so they always match.
+const FRAME_TOP_BAR_PX = TOP_BAR_H_PX
+const FRAME_BEZEL_PX = BEZEL_PX
 
 export function FloatingChrome({ pinned, onPinChange, framed = false }: FloatingChromeProps) {
   const [searchOpen, setSearchOpen] = useState(false)
